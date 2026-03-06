@@ -1,0 +1,126 @@
+---
+const services = [
+    {
+        title: "1. Tiendas virtuales (E-Commerce)",
+        description:
+            "Vende tus productos 24/7 con una tienda online profesional. Catálogos autogestionables, carritos de compra optimizados y pasarelas de pago integradas (Stripe, MercadoPago).",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        tags: ["E-Commerce", "Ventas", "Pasarelas de Pago"],
+    },
+    {
+        title: "2. Landing Pages / Leads",
+        description:
+            "Diseñadas para la conversión. Integración con formularios (Resend), bases de datos ligeras (Supabase) y píxeles de analítica para campañas en Google o Meta Ads.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        tags: ["Next.js", "Conversión", "Leads", "Ads"],
+    },
+    {
+        title: "3. Aplicaciones Web (CRM)",
+        description:
+            "Desarrollo de software a medida. Dashboards, autenticación, roles de usuario y bases de datos relacionales robustas usando React y Supabase/Firebase.",
+        image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        tags: ["React", "Supabase", "Dashboards"],
+    },
+];
+---
+
+<section id="proyectos" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+            class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8"
+        >
+            <div class="max-w-2xl">
+                <h2
+                    class="text-primary-600 font-semibold tracking-wide uppercase text-sm mb-2"
+                >
+                    NUESTROS SERVICIOS
+                </h2>
+                <p
+                    class="text-3xl md:text-4xl leading-8 font-heading font-extrabold tracking-tight text-gray-900"
+                >
+                    Construimos el motor <span class="text-gradient"
+                        >de tus ventas futuras</span
+                    >.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="#contacto"
+                    class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors"
+                >
+                    ¿Cuál necesitas? Hablemos
+                    <svg
+                        class="ml-1 w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {
+                services.map((service, index) => (
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group">
+                        <div class="relative overflow-hidden h-56">
+                            <div class="absolute inset-0 bg-gray-900/10 group-hover:bg-transparent transition-colors z-10" />
+                            <img
+                                src={service.image}
+                                alt={service.title}
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                loading={index > 0 ? "lazy" : "eager"}
+                            />
+                        </div>
+                        <div class="p-8 flex-grow flex flex-col">
+                            <div class="flex flex-wrap gap-2 mb-4 justify-between items-start">
+                                <div class="flex flex-wrap gap-2 flex-1">
+                                    {service.tags.map((tag) => (
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-100">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                                {service.price && (
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-50 text-green-700 border border-green-200 shadow-sm whitespace-nowrap">
+                                        {service.price}
+                                    </span>
+                                )}
+                            </div>
+                            <h3 class="text-xl font-heading font-bold text-gray-900 mb-3">
+                                {service.title}
+                            </h3>
+                            <p class="text-gray-600 mb-6 flex-grow">
+                                {service.description}
+                            </p>
+                            <a
+                                href="#contacto"
+                                class="inline-flex items-center font-medium text-primary-600 hover:text-primary-700 group/link mt-auto"
+                            >
+                                Más información
+                                <svg
+                                    class="ml-1 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
