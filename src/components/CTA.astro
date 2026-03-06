@@ -49,6 +49,7 @@
         </p>
 
         <form
+            id="contact-form"
             class="glass-dark p-8 md:p-10 rounded-3xl max-w-3xl mx-auto text-left relative overflow-hidden group"
         >
             <div
@@ -156,3 +157,75 @@
         </form>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById(
+            "contact-form"
+        ) as HTMLFormElement | null;
+
+        if (form) {
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                // Change button text to indicate loading
+                const submitBtn = form.querySelector(
+                    'button[type="submit"]'
+                ) as HTMLButtonElement | null;
+                let originalBtnText = "Agendar Asesoría Gratuita";
+
+                if (submitBtn) {
+                    originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = "Enviando...";
+                    submitBtn.disabled = true;
+                }
+
+                const formData = new FormData(form);
+                const name = formData.get("name");
+                const email = formData.get("email");
+                const category = formData.get("category");
+                const message = formData.get("message");
+
+                try {
+                    // Send email via FormSubmit AJAX
+                    await fetch(
+                        "https://formsubmit.co/ajax/info@sfoestudioweb.com",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                            body: JSON.stringify({
+                                Nombre: name,
+                                Correo: email,
+                                Servicio_Deseado: category,
+                                Metas_Comerciales: message,
+                                _subject: "Nuevo Lead - Asesoría Gratuita",
+                                _template: "table",
+                            }),
+                        }
+                    );
+
+                    // Redirect to WhatsApp
+                    const whatsappNumber = "51949063359";
+                    const whatsappText = `Hola, mi nombre es ${name}. Acabo de solicitar una asesoría gratuita a través de la página web. Mi correo es ${email}.`;
+                    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                        whatsappText
+                    )}`;
+
+                    window.location.href = whatsappUrl;
+                } catch (error) {
+                    console.error("Error al enviar el formulario:", error);
+                    alert(
+                        "Hubo un error al enviar el formulario. Por favor, intenta contactarnos directamente por WhatsApp."
+                    );
+                    if (submitBtn) {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+        }
+    });
+</script>
