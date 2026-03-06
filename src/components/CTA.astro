@@ -189,7 +189,7 @@
                 try {
                     // Send email via FormSubmit AJAX
                     await fetch(
-                        "https://formsubmit.co/ajax/info@sfoestudioweb.com",
+                        "https://formsubmit.co/ajax/contacto@sfoestudioweb.com",
                         {
                             method: "POST",
                             headers: {
@@ -198,11 +198,13 @@
                             },
                             body: JSON.stringify({
                                 Nombre: name,
-                                Correo: email,
+                                email: email, // Necesario para enviar auto-respuesta vía FormSubmit
                                 Servicio_Deseado: category,
                                 Metas_Comerciales: message,
                                 _subject: "Nuevo Lead - Asesoría Gratuita",
                                 _template: "table",
+                                _autoresponse:
+                                    "¡Hola! Hemos recibido tu información exitosamente. Pronto nos pondremos en contacto contigo para agendar tu asesoría gratuita. Atentamente, el equipo de SFO Estudio Web.",
                             }),
                         }
                     );
