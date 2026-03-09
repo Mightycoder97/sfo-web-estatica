@@ -1,0 +1,392 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Imprimir Factura/Recibo">
+    <!-- NO-PRINT Navigation Bar -->
+    <div
+        class="print:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md"
+    >
+        <div class="flex items-center space-x-3">
+            <button
+                onclick="window.history.back()"
+                class="hover:bg-slate-700 p-2 rounded-lg transition-colors flex items-center space-x-1"
+            >
+                <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"></path>
+                </svg>
+                <span>Volver</span>
+            </button>
+            <h1 class="font-semibold">Generador de Documento de Cobro</h1>
+        </div>
+        <button
+            onclick="window.print()"
+            class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center space-x-2"
+        >
+            <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                ></path>
+            </svg>
+            <span>Imprimir Documento</span>
+        </button>
+    </div>
+
+    <div
+        id="loading"
+        class="print:hidden flex flex-col items-center justify-center p-20"
+    >
+        <div
+            class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"
+        >
+        </div>
+        <p class="text-slate-600">Cargando datos del cliente...</p>
+    </div>
+
+    <!-- DOCUMENT PAGE 1: FACTURA / RECIBO -->
+    <div
+        id="document-content"
+        class="hidden font-['Inter'] text-slate-800 bg-white"
+    >
+        <!-- Factura -->
+        <div
+            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white p-12 print:w-[210mm] print:m-0 shadow-2xl print:shadow-none text-[10pt] relative"
+        >
+            <div
+                class="absolute top-0 right-12 w-32 h-32 bg-blue-600/10 rounded-b-full print:bg-blue-600/10 -z-10"
+            >
+            </div>
+
+            <!-- Header -->
+            <div
+                class="flex justify-between items-start border-b-2 border-blue-600 pb-6 mb-8 mt-4"
+            >
+                <div class="flex flex-col">
+                    <img
+                        src="/img/logo_sfo.png"
+                        alt="SFO Logo"
+                        class="h-16 w-max filter drop-shadow-sm mb-4"
+                    />
+                    <h2 class="text-blue-900 font-bold text-sm">
+                        SFO ESTUDIO WEB
+                    </h2>
+                    <p class="text-xs text-slate-500 max-w-[200px] mt-1">
+                        Transformación Digital y Desarrollo Tecnológico
+                    </p>
+                    <p class="text-xs text-slate-500 mt-2">
+                        DNI: 75510799<br />contacto@sfo-estudio-web.com
+                    </p>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <div
+                        class="bg-slate-50 border border-slate-200 rounded-lg p-4 w-48 text-center mt-2 shadow-sm"
+                    >
+                        <h1
+                            class="text-xl font-bold font-['Outfit'] tracking-wider text-slate-800 uppercase mb-2 border-b border-slate-200 pb-2"
+                        >
+                            PROFORMA
+                        </h1>
+                        <p
+                            class="text-xl font-mono text-blue-600 font-medium tracking-tighter"
+                        >
+                            Nº <span id="num-factura">0001</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Info -->
+            <div class="flex justify-between mb-8 grid grid-cols-2 gap-8">
+                <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                    <p
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+                    >
+                        Facturar a:
+                    </p>
+                    <p
+                        id="fact-nombre"
+                        class="font-bold text-sm text-slate-800 uppercase"
+                    >
+                    </p>
+                    <p id="fact-doc" class="text-xs text-slate-600 mt-1"></p>
+                    <p
+                        id="fact-direccion"
+                        class="text-xs text-slate-600 mt-1 max-w-[250px]"
+                    >
+                    </p>
+                    <p id="fact-email" class="text-xs text-slate-600 mt-1"></p>
+                </div>
+
+                <div
+                    class="bg-blue-50/50 rounded-lg p-4 border border-blue-100 flex flex-col justify-center"
+                >
+                    <div
+                        class="flex justify-between border-b border-blue-100 pb-2 mb-2"
+                    >
+                        <span class="text-xs font-bold text-slate-500 uppercase"
+                            >Fecha de Emisión:</span
+                        >
+                        <span
+                            id="fact-fecha"
+                            class="text-xs text-slate-800 font-medium"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase"
+                            >Vencimiento:</span
+                        >
+                        <span
+                            id="fact-vence"
+                            class="text-xs text-slate-800 font-medium"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line Items Table -->
+            <div class="mb-8">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-800 text-white rounded">
+                        <tr>
+                            <th
+                                class="py-3 px-4 font-semibold w-12 rounded-tl-lg"
+                                >Ítem</th
+                            >
+                            <th class="py-3 px-4 font-semibold"
+                                >Descripción del Servicio</th
+                            >
+                            <th
+                                class="py-3 px-4 font-semibold text-right w-32 rounded-tr-lg"
+                                >Importe</th
+                            >
+                        </tr>
+                    </thead>
+                    <tbody id="items-body">
+                        <!-- Items vacíos iniciales, llenaremos dinámicamente si podemos, o datos fijos -->
+                        <tr class="border-b border-slate-200 hover:bg-slate-50">
+                            <td class="py-4 px-4 font-medium text-slate-500"
+                                >1</td
+                            >
+                            <td class="py-4 px-4">
+                                <p
+                                    class="font-bold text-slate-800"
+                                    id="item-titulo"
+                                >
+                                    Servicios de Desarrollo Web
+                                </p>
+                                <p
+                                    class="text-xs text-slate-500 mt-1 max-w-[400px]"
+                                    id="item-desc"
+                                >
+                                    Desarrollo y estructuración de plataforma
+                                    web según requerimientos especificados en
+                                    propuesta comercial y contrato de servicios.
+                                </p>
+                            </td>
+                            <td
+                                class="py-4 px-4 text-right font-medium"
+                                id="item-precio">S/ 0.00</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totals -->
+            <div class="flex justify-end mb-16">
+                <div class="w-64">
+                    <div
+                        class="flex justify-between border-b border-slate-200 py-2"
+                    >
+                        <span
+                            class="text-slate-500 font-medium text-xs uppercase"
+                            >Subtotal</span
+                        >
+                        <span class="text-slate-800 font-medium" id="total-sub"
+                            >S/ 0.00</span
+                        >
+                    </div>
+                    <div
+                        class="flex justify-between border-b border-slate-200 py-2 hidden"
+                        id="row-descuento"
+                    >
+                        <span class="text-red-500 font-medium text-xs uppercase"
+                            >Descuento</span
+                        >
+                        <span class="text-red-600 font-medium" id="total-desc"
+                            >- S/ 0.00</span
+                        >
+                    </div>
+                    <div
+                        class="flex justify-between py-3 mt-1 bg-slate-50 rounded px-2"
+                    >
+                        <span class="text-slate-800 font-bold text-sm uppercase"
+                            >Total a Pagar</span
+                        >
+                        <span
+                            class="text-blue-600 font-bold text-lg"
+                            id="total-final">S/ 0.00</span
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border-t-2 border-dashed border-slate-200 pt-6 mt-16 text-xs text-slate-500 text-center"
+            >
+                Este documento constituye un comprobante de prestación de
+                servicios.<br />
+                Agradecemos su preferencia y confianza en SFO Estudio Web.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        import { getSupabaseClient } from "../../lib/supabaseClient";
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clientId = urlParams.get("id");
+
+            if (!clientId) {
+                alert("ID de cliente no proporcionado.");
+                return;
+            }
+
+            const supabase = getSupabaseClient();
+            if (!supabase) return;
+
+            try {
+                // Fetch basic client & their invoices if any (for now we generate a generic visual presentation if none)
+                const { data: cliente, error } = await supabase
+                    .from("clientes")
+                    .select(
+                        `
+                        *,
+                        empresas(
+                            *,
+                            factura(
+                                *,
+                                tipo_servicio(*)
+                            )
+                        )
+                    `
+                    )
+                    .eq("id_cliente", clientId)
+                    .single();
+
+                if (error) throw error;
+
+                const empresa =
+                    cliente.empresas && cliente.empresas.length > 0
+                        ? cliente.empresas[0]
+                        : null;
+
+                const nombreCompleto = `${cliente.nombres} ${cliente.apellidos}`;
+                const nombreEmpresa = empresa
+                    ? empresa.razon_social
+                    : nombreCompleto;
+                const docEmpresa = empresa
+                    ? `RUC: ${empresa.numero_ruc}`
+                    : `${cliente.tipo_documento}: ${cliente.numero_documento}`;
+                const direccion = empresa?.direccion || "";
+
+                // Populate Invoice Header
+                document.getElementById("fact-nombre")!.textContent =
+                    nombreEmpresa;
+                document.getElementById("fact-doc")!.textContent = docEmpresa;
+                document.getElementById("fact-direccion")!.textContent =
+                    direccion;
+                document.getElementById("fact-email")!.textContent =
+                    cliente.email || "";
+
+                const dateOptions: Intl.DateTimeFormatOptions = {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                };
+                const today = new Date();
+                document.getElementById("fact-fecha")!.textContent =
+                    today.toLocaleDateString("es-ES", dateOptions);
+
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + 7); // +7 days
+                document.getElementById("fact-vence")!.textContent =
+                    dueDate.toLocaleDateString("es-ES", dateOptions);
+
+                // Fetch real invoice data and calculate total if exists
+                // We assume showing latest pending invoice, or mapping everything
+                let montoTotal = 0.0;
+                let descuento = 0.0;
+                let servicioAsociado = "Servicios de Desarrollo Web";
+
+                if (empresa && empresa.factura && empresa.factura.length > 0) {
+                    const factura = empresa.factura[0]; // pick latest
+                    montoTotal = parseFloat(factura.monto);
+                    descuento = parseFloat(factura.descuento || 0);
+
+                    if (factura.tipo_servicio) {
+                        servicioAsociado =
+                            factura.tipo_servicio.nombre_servicio;
+                        document.getElementById("item-desc")!.textContent =
+                            factura.tipo_servicio.descripcion ||
+                            document.getElementById("item-desc")!.textContent;
+                    }
+
+                    document.getElementById("num-factura")!.textContent =
+                        factura.id_factura.substring(0, 8).toUpperCase();
+                }
+
+                // If no real invoice found in DB, just show placeholder zero pricing
+                // Or user can use the UI to add invoices later
+                document.getElementById("item-titulo")!.textContent =
+                    servicioAsociado;
+
+                const formatMoney = (amount: number) =>
+                    `S/ ${amount.toFixed(2)}`;
+
+                document.getElementById("item-precio")!.textContent =
+                    formatMoney(montoTotal);
+                document.getElementById("total-sub")!.textContent =
+                    formatMoney(montoTotal);
+
+                if (descuento > 0) {
+                    document
+                        .getElementById("row-descuento")!
+                        .classList.remove("hidden");
+                    document.getElementById(
+                        "total-desc"
+                    )!.textContent = `- ${formatMoney(descuento)}`;
+                }
+
+                document.getElementById("total-final")!.textContent =
+                    formatMoney(montoTotal - descuento);
+
+                // Show document content, hide loader
+                document.getElementById("loading")!.classList.add("hidden");
+                document
+                    .getElementById("document-content")!
+                    .classList.remove("hidden");
+            } catch (error) {
+                console.error(
+                    "Error loading client details for invoice:",
+                    error
+                );
+                alert("Hubo un error cargando los datos del cliente");
+            }
+        });
+    </script>
+</AdminLayout>

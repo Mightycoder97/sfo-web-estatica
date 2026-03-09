@@ -1,0 +1,369 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Imprimir Contrato">
+    <!-- NO-PRINT Navigation Bar -->
+    <div
+        class="print:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md"
+    >
+        <div class="flex items-center space-x-3">
+            <button
+                onclick="window.history.back()"
+                class="hover:bg-slate-700 p-2 rounded-lg transition-colors flex items-center space-x-1"
+            >
+                <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"></path>
+                </svg>
+                <span>Volver</span>
+            </button>
+            <h1 class="font-semibold">Generador de Contrato</h1>
+        </div>
+        <button
+            onclick="window.print()"
+            class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center space-x-2"
+        >
+            <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                ></path>
+            </svg>
+            <span>Imprimir PDF</span>
+        </button>
+    </div>
+
+    <div
+        id="loading"
+        class="print:hidden flex flex-col items-center justify-center p-20"
+    >
+        <div
+            class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"
+        >
+        </div>
+        <p class="text-slate-600">Cargando datos del cliente...</p>
+    </div>
+
+    <!-- DOCUMENT PAGE 1: PORTADA -->
+    <div
+        id="document-content"
+        class="hidden font-['Inter'] text-slate-800 bg-white"
+    >
+        <!-- Portada en página independiente -->
+        <div
+            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white relative print:w-[210mm] print:h-[297mm] print:m-0 print:break-after-page shadow-2xl print:shadow-none mb-8 flex flex-col"
+        >
+            <div
+                class="h-64 bg-[url('/img/portada.jpg')] bg-cover bg-center relative"
+            >
+                <div class="absolute inset-0 bg-blue-900/80"></div>
+                <div
+                    class="relative z-10 h-full flex flex-col items-center justify-center text-white"
+                >
+                    <img
+                        src="/img/logo_sfo.png"
+                        alt="SFO Logo"
+                        class="h-24 brightness-0 invert mb-4 filter drop-shadow-md"
+                    />
+                    <h1
+                        class="text-3xl font-bold font-['Outfit'] uppercase tracking-widest"
+                    >
+                        SFO Estudio Web
+                    </h1>
+                    <p
+                        class="mt-2 text-blue-100 uppercase tracking-widest text-sm"
+                    >
+                        Transformación Digital Integral
+                    </p>
+                </div>
+            </div>
+            <div class="flex-grow flex flex-col justify-center px-20">
+                <div class="border-l-4 border-blue-600 pl-8 py-4">
+                    <h2
+                        class="text-4xl font-black font-['Outfit'] text-slate-900 mb-2 uppercase tracking-tight"
+                    >
+                        Contrato de <br /> Prestación de <br /> Servicios
+                    </h2>
+                    <p class="text-slate-500 text-lg mt-6 block">
+                        Preparado exclusivamente para:
+                    </p>
+                    <p
+                        id="portada-cliente"
+                        class="text-2xl font-bold text-blue-800 mt-2 uppercase"
+                    >
+                    </p>
+                    <p id="portada-empresa" class="text-xl text-slate-700 mt-1">
+                    </p>
+                </div>
+            </div>
+            <div
+                class="h-32 bg-slate-50 flex items-center justify-between px-20 border-t border-slate-200"
+            >
+                <div class="text-sm text-slate-500">
+                    <p>Fecha de emisión:</p>
+                    <p id="portada-fecha" class="font-bold text-slate-800"></p>
+                </div>
+                <div class="text-right text-sm text-slate-500">
+                    <p>SFO Estudio Web</p>
+                    <p>contacto@sfo-estudio-web.com</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOCUMENT PAGE 2: CONTRATO -->
+        <div
+            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white p-16 print:w-[210mm] print:m-0 shadow-2xl print:shadow-none text-[10pt] leading-relaxed flex flex-col"
+        >
+            <div
+                class="flex justify-between items-end border-b-2 border-slate-800 pb-4 mb-8"
+            >
+                <div>
+                    <h3
+                        class="text-2xl font-bold font-['Outfit'] uppercase text-slate-900"
+                    >
+                        Acuerdo de Servicios
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-1">
+                        Términos y Condiciones Legales
+                    </p>
+                </div>
+                <img
+                    src="/img/logo_sfo.png"
+                    alt="SFO Logo"
+                    class="h-10 opacity-80 filter grayscale"
+                />
+            </div>
+
+            <div class="flex-grow">
+                <p class="text-justify mb-4">
+                    Conste por el presente documento, el CONTRATO DE PRESTACIÓN
+                    DE SERVICIOS que celebran de una parte <strong
+                        >SFO ESTUDIO WEB</strong
+                    >, representado por su Director General <strong
+                        >Sebastian Leonardo Retamozo Reategui</strong
+                    >, debidamente identificado con DNI N° 75510799, a quien en
+                    adelante se le denominará "EL PROVEEDOR"; y de la otra parte
+                    el CLIENTE detallado a continuación:
+                </p>
+
+                <div
+                    class="bg-slate-50 p-6 rounded border border-slate-200 mb-6 flex flex-col space-y-2"
+                >
+                    <div class="flex">
+                        <span class="w-32 font-bold text-slate-700"
+                            >Nombre/Razón:</span
+                        >
+                        <span
+                            id="doc-nombre"
+                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                        ></span>
+                    </div>
+                    <div class="flex">
+                        <span class="w-32 font-bold text-slate-700"
+                            >Identificación:</span
+                        >
+                        <span
+                            id="doc-rut"
+                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                        ></span>
+                    </div>
+                    <div class="flex">
+                        <span class="w-32 font-bold text-slate-700"
+                            >Representante:</span
+                        >
+                        <span
+                            id="doc-rep"
+                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                        ></span>
+                    </div>
+                    <div class="flex">
+                        <span class="w-32 font-bold text-slate-700">Email:</span
+                        >
+                        <span
+                            id="doc-email"
+                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                        ></span>
+                    </div>
+                </div>
+
+                <p class="font-bold mb-2">
+                    CLÁUSULA PRIMERA: OBJETO DEL CONTRATO
+                </p>
+                <p class="text-justify mb-4">
+                    EL PROVEEDOR se compromete a prestar a favor de EL CLIENTE
+                    los servicios de diseño y desarrollo web, mantenimiento o
+                    los servicios digitales específicos acordados previamente en
+                    la propuesta técnica y económica.
+                </p>
+
+                <p class="font-bold mb-2">
+                    CLÁUSULA SEGUNDA: OBLIGACIONES DE LAS PARTES
+                </p>
+                <p class="text-justify mb-4">
+                    1. EL PROVEEDOR se compromete a ejecutar los servicios con
+                    diligencia y en los plazos establecidos.<br />
+                    2. EL CLIENTE se compromete a facilitar toda la información necesaria
+                    (textos, imágenes, accesos) de forma oportuna y a cumplir con
+                    el cronograma de pagos acordado.<br />
+                    3. La demora en la entrega de material exime a EL PROVEEDOR de
+                    retrasos en la entrega del proyecto.
+                </p>
+
+                <p class="font-bold mb-2">CLÁUSULA TERCERA: CONFIDENCIALIDAD</p>
+                <p class="text-justify mb-8">
+                    Ambas partes mantendrán en estricta confidencialidad toda la
+                    información manejada para el desarrollo de los proyectos y
+                    no podrá ser revelada a terceros sin el consentimiento
+                    escrito de la contraparte.
+                </p>
+            </div>
+
+            <!-- Firmas -->
+            <div class="mt-8">
+                <p class="mb-16">
+                    Estando conforme con todas las cláusulas, firman el presente
+                    documento:
+                </p>
+
+                <div class="flex justify-between mt-12 pt-8">
+                    <!-- Firma SFO -->
+                    <div class="text-center w-64">
+                        <div class="border-t-2 border-slate-800 pt-2 relative">
+                            <!-- Optional: Placeholder for actual written signature image goes here above the line -->
+                            <p
+                                class="font-bold text-sm text-slate-900 uppercase"
+                            >
+                                Sebastian Leonardo Retamozo Reategui
+                            </p>
+                            <p class="text-xs text-slate-600">
+                                Director de SFO Estudio Web
+                            </p>
+                            <p class="text-xs text-slate-500">DNI: 75510799</p>
+                        </div>
+                    </div>
+
+                    <!-- Firma Cliente -->
+                    <div class="text-center w-64">
+                        <div class="border-t-2 border-slate-800 pt-2">
+                            <p
+                                id="firma-cliente-nombre"
+                                class="font-bold text-sm text-slate-900 uppercase min-h-[1rem]"
+                            >
+                            </p>
+                            <p
+                                id="firma-cliente-doc"
+                                class="text-xs text-slate-600 min-h-[1rem]"
+                            >
+                            </p>
+                            <p class="text-xs text-slate-500">
+                                Representante Legal / Cliente
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        import { getSupabaseClient } from "../../lib/supabaseClient";
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clientId = urlParams.get("id");
+
+            if (!clientId) {
+                alert("ID de cliente no proporcionado.");
+                return;
+            }
+
+            const supabase = getSupabaseClient();
+            if (!supabase) return;
+
+            try {
+                // Fetch basic client
+                const { data: cliente, error } = await supabase
+                    .from("clientes")
+                    .select("*, empresas(*)")
+                    .eq("id_cliente", clientId)
+                    .single();
+
+                if (error) throw error;
+
+                const empresa =
+                    cliente.empresas && cliente.empresas.length > 0
+                        ? cliente.empresas[0]
+                        : null;
+
+                const nombreCompleto = `${cliente.nombres} ${cliente.apellidos}`;
+                const nombreEmpresa = empresa
+                    ? empresa.razon_social
+                    : nombreCompleto;
+                const docEmpresa = empresa
+                    ? `RUC: ${empresa.numero_ruc}`
+                    : `${cliente.tipo_documento}: ${cliente.numero_documento}`;
+
+                // Populate Portada
+                document.getElementById("portada-cliente")!.textContent =
+                    nombreEmpresa;
+                if (empresa) {
+                    document.getElementById(
+                        "portada-empresa"
+                    )!.textContent = `Representante: ${nombreCompleto}`;
+                }
+
+                const dateOptions: Intl.DateTimeFormatOptions = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
+                document.getElementById("portada-fecha")!.textContent =
+                    new Date().toLocaleDateString("es-ES", dateOptions);
+
+                // Populate Document
+                document.getElementById("doc-nombre")!.textContent =
+                    nombreEmpresa;
+                document.getElementById("doc-rut")!.textContent =
+                    docEmpresa.replace(":", "");
+                document.getElementById("doc-rep")!.textContent = empresa
+                    ? nombreCompleto
+                    : "(Mismo)";
+                document.getElementById("doc-email")!.textContent =
+                    cliente.email || "N/A";
+
+                // Populate Signatures
+                document.getElementById("firma-cliente-nombre")!.textContent =
+                    nombreCompleto;
+                document.getElementById(
+                    "firma-cliente-doc"
+                )!.textContent = `${cliente.tipo_documento}: ${cliente.numero_documento}`;
+
+                // Show document content, hide loader
+                document.getElementById("loading")!.classList.add("hidden");
+                document
+                    .getElementById("document-content")!
+                    .classList.remove("hidden");
+            } catch (error) {
+                console.error(
+                    "Error loading client details for contract:",
+                    error
+                );
+                alert("Hubo un error cargando los datos del cliente");
+            }
+        });
+    </script>
+</AdminLayout>

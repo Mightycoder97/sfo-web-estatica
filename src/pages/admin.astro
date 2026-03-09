@@ -1,0 +1,714 @@
+---
+import AdminLayout from "../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Panel de Clientes">
+    <!-- UI ESTADO: CARGANDO -->
+    <div
+        id="ui-loading"
+        class="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-50 transition-opacity duration-300"
+    >
+        <div
+            class="bg-white/80 p-6 rounded-2xl shadow-xl flex flex-col items-center space-y-4"
+        >
+            <div
+                class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"
+            >
+            </div>
+            <p class="text-slate-700 font-medium">Autenticando...</p>
+        </div>
+    </div>
+
+    <!-- UI ESTADO: LOGIN -->
+    <div
+        id="ui-login"
+        class="hidden min-h-screen flex items-center justify-center bg-[url('/img/portada.jpg')] bg-cover bg-center relative"
+    >
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div
+            class="relative z-10 w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl overflow-hidden"
+        >
+            <div
+                class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"
+            >
+            </div>
+            <div class="text-center">
+                <img
+                    src="/img/logo_sfo.png"
+                    alt="SFO Estudio Web"
+                    class="h-16 mx-auto mb-6 brightness-0 invert drop-shadow-md"
+                />
+                <h1 class="text-3xl font-bold text-white mb-2 font-['Outfit']">
+                    Acceso Restringido
+                </h1>
+                <p class="text-white/80 mb-8 text-sm">
+                    Panel administrativo exclusivo.
+                </p>
+                <button
+                    id="btn-login"
+                    class="w-full bg-white text-slate-900 font-semibold py-3.5 px-4 rounded-xl shadow-lg hover:bg-slate-50 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-2"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                        ></path>
+                    </svg>
+                    <span>Iniciar Sesión Segura</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI ESTADO: DASHBOARD -->
+    <div
+        id="ui-dashboard"
+        class="hidden min-h-screen bg-slate-50 flex flex-col"
+    >
+        <!-- Top Navigation -->
+        <nav
+            class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm"
+        >
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center space-x-4">
+                        <img
+                            src="/img/logo_sfo.png"
+                            alt="SFO Logo"
+                            class="h-8 w-auto filter drop-shadow"
+                        />
+                        <span
+                            class="font-['Outfit'] font-bold text-xl text-slate-800 tracking-tight"
+                            >Admin<span class="text-blue-600">Panel</span>
+                        </span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex flex-col text-right hidden sm:block">
+                            <span
+                                id="user-name"
+                                class="text-sm font-semibold text-slate-700 block"
+                                >Cargando...</span
+                            >
+                            <span
+                                id="user-email"
+                                class="text-xs text-slate-500 block">...</span
+                            >
+                        </div>
+                        <img
+                            id="user-picture"
+                            src=""
+                            alt="Avatar"
+                            class="h-9 w-9 rounded-full ring-2 ring-blue-100 hidden sm:block cursor-pointer hover:ring-blue-300 transition-all object-cover"
+                        />
+                        <button
+                            id="btn-logout"
+                            class="ml-4 text-slate-500 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-red-50"
+                            title="Cerrar Sesión"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                ><path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div
+                class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"
+            >
+                <div>
+                    <h2
+                        class="text-2xl font-bold text-slate-900 font-['Outfit']"
+                    >
+                        Gestión de Clientes
+                    </h2>
+                    <p class="text-slate-500 text-sm mt-1">
+                        Administra tus clientes, contratos y facturación.
+                    </p>
+                </div>
+                <button
+                    id="btn-new-client"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium shadow-sm shadow-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center space-x-2"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span>Nuevo Cliente</span>
+                </button>
+            </div>
+
+            <!-- Table Card -->
+            <div
+                class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+            >
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                                    >Cliente</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                                    >Documento</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                                    >Contacto</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                                    >Acciones</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody
+                            id="clients-tbody"
+                            class="bg-white divide-y divide-slate-100"
+                        >
+                            <!-- Dynamic content will go here -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Empty state (hidden by default) -->
+                <div
+                    id="empty-state"
+                    class="hidden flex flex-col items-center justify-center p-12 text-center"
+                >
+                    <div class="bg-blue-50 p-4 rounded-full mb-4">
+                        <svg
+                            class="w-8 h-8 text-blue-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-slate-900">
+                        No hay clientes aún
+                    </h3>
+                    <p class="mt-1 text-sm text-slate-500">
+                        Agrega tu primer cliente para comenzar a gestionarlos.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL CLIENTES (Crear / Editar) -->
+    <dialog
+        id="modal-client"
+        class="bg-transparent p-0 m-auto w-full max-w-md backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm open:animate-in open:fade-in open:zoom-in-95"
+    >
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden w-full m-4">
+            <div
+                class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50"
+            >
+                <h3
+                    class="text-lg font-bold text-slate-900 font-['Outfit']"
+                    id="modal-title"
+                >
+                    Nuevo Cliente
+                </h3>
+                <button
+                    type="button"
+                    id="btn-close-modal"
+                    class="text-slate-400 hover:text-slate-700 transition-colors"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="form-client" class="p-6 space-y-4">
+                <input type="hidden" id="client-id" name="id" />
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                            >Nombres <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="client-nombres"
+                            required
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                            >Apellidos <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="client-apellidos"
+                            required
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                            >Tipo Doc. <span class="text-red-500">*</span>
+                        </label>
+                        <select
+                            id="client-tipo-doc"
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none cursor-pointer"
+                        >
+                            <option value="DNI">DNI</option>
+                            <option value="CE">CE</option>
+                            <option value="RUC">RUC</option>
+                            <option value="PASAPORTE">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                            >Nº Doc. <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="client-num-doc"
+                            required
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                        >Correo Electrónico</label
+                    >
+                    <input
+                        type="email"
+                        id="client-email"
+                        class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1"
+                        >Teléfono</label
+                    >
+                    <input
+                        type="tel"
+                        id="client-telefono"
+                        class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none"
+                    />
+                </div>
+
+                <div
+                    class="px-4 py-3 bg-blue-50 text-blue-800 text-xs rounded-lg border border-blue-100 flex items-start space-x-2 mt-2"
+                >
+                    <svg
+                        class="w-5 h-5 shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <p>
+                        Una vez creado el cliente, podrás asignarle una <strong
+                            >empresa, contratos y facturas</strong
+                        > directamente en la base de datos.
+                    </p>
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button
+                        type="button"
+                        id="btn-cancel-modal"
+                        class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                        >Cancelar</button
+                    >
+                    <button
+                        type="submit"
+                        id="btn-save-modal"
+                        class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors flex items-center space-x-2"
+                    >
+                        <span>Guardar Cliente</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- INSTRUCCIONES LOGIC -->
+    <script>
+        import { getAuth0Client } from "../lib/authClient";
+        import { getSupabaseClient } from "../lib/supabaseClient";
+
+        // UI Element References
+        const uiLoading = document.getElementById("ui-loading");
+        const uiLogin = document.getElementById("ui-login");
+        const uiDashboard = document.getElementById("ui-dashboard");
+
+        const btnLogin = document.getElementById("btn-login");
+        const btnLogout = document.getElementById("btn-logout");
+
+        const userName = document.getElementById("user-name");
+        const userEmail = document.getElementById("user-email");
+        const userPicture = document.getElementById(
+            "user-picture"
+        ) as HTMLImageElement;
+
+        const clientsTbody = document.getElementById("clients-tbody");
+        const emptyState = document.getElementById("empty-state");
+        const btnNewClient = document.getElementById("btn-new-client");
+
+        // Modal Elements
+        const modalClient = document.getElementById(
+            "modal-client"
+        ) as HTMLDialogElement;
+        const formClient = document.getElementById(
+            "form-client"
+        ) as HTMLFormElement;
+        const btnCloseModal = document.getElementById("btn-close-modal");
+        const btnCancelModal = document.getElementById("btn-cancel-modal");
+        const modalTitle = document.getElementById("modal-title");
+        const btnSaveModal = document.getElementById("btn-save-modal");
+
+        let auth0 = null;
+        let supabase = null;
+
+        const initAuth = async () => {
+            try {
+                auth0 = await getAuth0Client();
+                if (!auth0) {
+                    throw new Error(
+                        "Missing Auth0 configuration. Have you added PUBLIC_AUTH0_DOMAIN and CLIENT_ID in .env?"
+                    );
+                }
+
+                if (
+                    window.location.search.includes("code=") &&
+                    window.location.search.includes("state=")
+                ) {
+                    await auth0.handleRedirectCallback();
+                    window.history.replaceState({}, document.title, "/admin");
+                }
+
+                const isAuthenticated = await auth0.isAuthenticated();
+
+                if (isAuthenticated) {
+                    const user = await auth0.getUser();
+
+                    // Display User Detail
+                    if (userName) userName.textContent = user.name || "Admin";
+                    if (userEmail) userEmail.textContent = user.email || "";
+                    if (userPicture && user.picture) {
+                        userPicture.src = user.picture;
+                        userPicture.classList.remove("hidden");
+                    }
+
+                    // Show Dashboard
+                    uiLogin?.classList.add("hidden");
+                    uiDashboard?.classList.remove("hidden");
+
+                    // Load Data
+                    supabase = getSupabaseClient();
+                    if (supabase) {
+                        await loadClients();
+                    } else {
+                        console.error("Missing Supabase configuration");
+                    }
+                } else {
+                    // Show Login
+                    uiDashboard?.classList.add("hidden");
+                    uiLogin?.classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error(
+                    "Error during authentication initialization:",
+                    error
+                );
+                alert(
+                    "Error cargando panel de autenticación: " +
+                        (error as Error).message
+                );
+                uiDashboard?.classList.add("hidden");
+                uiLogin?.classList.remove("hidden");
+            } finally {
+                // Hide Loading
+                uiLoading?.classList.add("hidden");
+            }
+        };
+
+        const loadClients = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("clientes")
+                    .select("*")
+                    .order("created_at", { ascending: false });
+
+                if (error) throw error;
+
+                renderClients(data || []);
+            } catch (error) {
+                console.error("Error fetching clients:", error);
+                alert("Error al cargar clientes");
+            }
+        };
+
+        const renderClients = (clients: any[]) => {
+            if (!clientsTbody || !emptyState) return;
+
+            clientsTbody.innerHTML = "";
+
+            if (clients.length === 0) {
+                emptyState.classList.remove("hidden");
+            } else {
+                emptyState.classList.add("hidden");
+                clients.forEach((client) => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-slate-50 transition-colors group";
+
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center text-blue-700 font-bold shadow-inner">
+                                    ${client.nombres.charAt(
+                                        0
+                                    )}${client.apellidos.charAt(0)}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-semibold text-slate-900">${
+                                        client.nombres
+                                    } ${client.apellidos}</div>
+                                    <div class="text-sm text-slate-500">Id: ${client.id_cliente.substring(
+                                        0,
+                                        8
+                                    )}...</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-slate-900">${
+                                client.tipo_documento
+                            }</div>
+                            <div class="text-sm font-medium text-slate-600">${
+                                client.numero_documento
+                            }</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-slate-900">${
+                                client.email ||
+                                '<span class="text-slate-400 italic">Sin Email</span>'
+                            }</div>
+                            <div class="text-sm text-slate-500">${
+                                client.telefono ||
+                                '<span class="text-slate-400 italic">Sin Teléfono</span>'
+                            }</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex items-center justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="window.location.href='/admin/contrato?id=${
+                                    client.id_cliente
+                                }'" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition-colors border border-blue-100" title="Imprimir Contrato">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </button>
+                                <button onclick="window.location.href='/admin/factura?id=${
+                                    client.id_cliente
+                                }'" class="text-emerald-600 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 p-2 rounded-lg transition-colors border border-emerald-100" title="Imprimir Factura">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </button>
+                                <button class="text-amber-600 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg transition-colors border border-amber-100" title="Editar">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </button>
+                                <button onclick="window.deleteClient('${
+                                    client.id_cliente
+                                }')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors border border-red-100" title="Eliminar">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    clientsTbody.appendChild(tr);
+                });
+            }
+        };
+
+        // Event Listeners
+        btnLogin?.addEventListener("click", async () => {
+            if (auth0) {
+                await auth0.loginWithRedirect();
+            }
+        });
+
+        btnLogout?.addEventListener("click", async () => {
+            if (auth0) {
+                await auth0.logout({
+                    logoutParams: {
+                        returnTo: window.location.origin + "/admin",
+                    },
+                });
+            }
+        });
+
+        btnNewClient?.addEventListener("click", () => {
+            if (modalTitle) modalTitle.textContent = "Nuevo Cliente";
+            formClient.reset();
+            (document.getElementById("client-id") as HTMLInputElement).value =
+                "";
+            modalClient?.showModal();
+        });
+
+        const closeModal = () => {
+            modalClient?.close();
+            formClient.reset();
+        };
+
+        btnCloseModal?.addEventListener("click", closeModal);
+        btnCancelModal?.addEventListener("click", closeModal);
+
+        formClient?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btn = btnSaveModal as HTMLButtonElement;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="w-5 h-5 animate-spin mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+
+            const id = (
+                document.getElementById("client-id") as HTMLInputElement
+            ).value;
+            const payload = {
+                nombres: (
+                    document.getElementById(
+                        "client-nombres"
+                    ) as HTMLInputElement
+                ).value,
+                apellidos: (
+                    document.getElementById(
+                        "client-apellidos"
+                    ) as HTMLInputElement
+                ).value,
+                tipo_documento: (
+                    document.getElementById(
+                        "client-tipo-doc"
+                    ) as HTMLSelectElement
+                ).value,
+                numero_documento: (
+                    document.getElementById(
+                        "client-num-doc"
+                    ) as HTMLInputElement
+                ).value,
+                email: (
+                    document.getElementById("client-email") as HTMLInputElement
+                ).value,
+                telefono: (
+                    document.getElementById(
+                        "client-telefono"
+                    ) as HTMLInputElement
+                ).value,
+            };
+
+            try {
+                if (id) {
+                    const { error } = await supabase
+                        .from("clientes")
+                        .update(payload)
+                        .eq("id_cliente", id);
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabase
+                        .from("clientes")
+                        .insert([payload]);
+                    if (error) throw error;
+                }
+
+                closeModal();
+                await loadClients();
+            } catch (error: any) {
+                console.error("Error guardando cliente:", error);
+                alert(
+                    "Error al guardar cliente. Verifique que el doc no esté duplicado."
+                );
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        (window as any).deleteClient = async (id: string) => {
+            if (
+                confirm(
+                    "¿Está seguro de que desea eliminar este cliente y TODA su información?"
+                )
+            ) {
+                try {
+                    const { error } = await supabase
+                        .from("clientes")
+                        .delete()
+                        .eq("id_cliente", id);
+                    if (error) throw error;
+                    await loadClients();
+                } catch (error: any) {
+                    console.error("Delete error", error);
+                    alert("Error eliminando.");
+                }
+            }
+        };
+
+        // Initialize!
+        document.addEventListener("DOMContentLoaded", () => {
+            initAuth();
+        });
+    </script>
+</AdminLayout>
