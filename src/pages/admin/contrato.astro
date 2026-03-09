@@ -58,94 +58,54 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         <p class="text-slate-600">Cargando datos del cliente...</p>
     </div>
 
-    <!-- DOCUMENT PAGE 1: PORTADA -->
+    <!-- DOCUMENT PAGE 1: CONTRATO -->
     <div
         id="document-content"
         class="hidden font-['Inter'] text-slate-800 bg-white"
     >
-        <!-- Portada en página independiente -->
         <div
-            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white relative print:w-[210mm] print:h-[297mm] print:m-0 print:break-after-page shadow-2xl print:shadow-none mb-8 flex flex-col"
+            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white p-12 print:w-[210mm] print:m-0 shadow-2xl print:shadow-none text-[10pt] leading-relaxed flex flex-col relative"
         >
             <div
-                class="h-64 bg-[url('/img/portada.jpg')] bg-cover bg-center relative"
+                class="absolute top-0 inset-x-0 h-4 bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600"
             >
-                <div class="absolute inset-0 bg-blue-900/80"></div>
+            </div>
+
+            <div
+                class="flex flex-col sm:flex-row justify-between items-center border-b-2 border-slate-200 pb-6 mb-8 mt-4"
+            >
                 <div
-                    class="relative z-10 h-full flex flex-col items-center justify-center text-white"
+                    class="flex flex-col items-center sm:items-start text-center sm:text-left"
                 >
                     <img
                         src="/img/logo_sfo.png"
                         alt="SFO Logo"
-                        class="h-24 brightness-0 invert mb-4 filter drop-shadow-md"
+                        class="h-14 mb-2 filter drop-shadow opacity-90"
                     />
                     <h1
-                        class="text-3xl font-bold font-['Outfit'] uppercase tracking-widest"
+                        class="text-xl font-bold font-['Outfit'] uppercase tracking-wider text-slate-900"
                     >
                         SFO Estudio Web
                     </h1>
                     <p
-                        class="mt-2 text-blue-100 uppercase tracking-widest text-sm"
+                        class="text-blue-600 text-xs font-semibold uppercase tracking-widest mt-0.5"
                     >
-                        Transformación Digital Integral
+                        Transformación Digital
                     </p>
                 </div>
-            </div>
-            <div class="flex-grow flex flex-col justify-center px-20">
-                <div class="border-l-4 border-blue-600 pl-8 py-4">
-                    <h2
-                        class="text-4xl font-black font-['Outfit'] text-slate-900 mb-2 uppercase tracking-tight"
-                    >
-                        Contrato de <br /> Prestación de <br /> Servicios
-                    </h2>
-                    <p class="text-slate-500 text-lg mt-6 block">
-                        Preparado exclusivamente para:
-                    </p>
-                    <p
-                        id="portada-cliente"
-                        class="text-2xl font-bold text-blue-800 mt-2 uppercase"
-                    >
-                    </p>
-                    <p id="portada-empresa" class="text-xl text-slate-700 mt-1">
-                    </p>
-                </div>
-            </div>
-            <div
-                class="h-32 bg-slate-50 flex items-center justify-between px-20 border-t border-slate-200"
-            >
-                <div class="text-sm text-slate-500">
-                    <p>Fecha de emisión:</p>
-                    <p id="portada-fecha" class="font-bold text-slate-800"></p>
-                </div>
-                <div class="text-right text-sm text-slate-500">
-                    <p>SFO Estudio Web</p>
-                    <p>contacto@sfo-estudio-web.com</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- DOCUMENT PAGE 2: CONTRATO -->
-        <div
-            class="w-full max-w-[210mm] mx-auto min-h-[297mm] bg-white p-16 print:w-[210mm] print:m-0 shadow-2xl print:shadow-none text-[10pt] leading-relaxed flex flex-col"
-        >
-            <div
-                class="flex justify-between items-end border-b-2 border-slate-800 pb-4 mb-8"
-            >
-                <div>
+                <div class="text-right flex flex-col items-end mt-4 sm:mt-0">
                     <h3
-                        class="text-2xl font-bold font-['Outfit'] uppercase text-slate-900"
+                        class="text-2xl font-bold font-['Outfit'] uppercase text-slate-800 tracking-tight"
                     >
                         Acuerdo de Servicios
                     </h3>
-                    <p class="text-slate-500 text-sm mt-1">
+                    <p class="text-slate-500 text-sm mt-1 mb-2">
                         Términos y Condiciones Legales
                     </p>
+                    <span
+                        class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full font-medium border border-blue-100 uppercase tracking-widest block"
+                        id="portada-fecha"></span>
                 </div>
-                <img
-                    src="/img/logo_sfo.png"
-                    alt="SFO Logo"
-                    class="h-10 opacity-80 filter grayscale"
-                />
             </div>
 
             <div class="flex-grow">
@@ -161,70 +121,109 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                 </p>
 
                 <div
-                    class="bg-slate-50 p-6 rounded border border-slate-200 mb-6 flex flex-col space-y-2"
+                    class="bg-blue-50/50 p-6 rounded border border-blue-100 mb-6 grid grid-cols-2 gap-4"
                 >
-                    <div class="flex">
-                        <span class="w-32 font-bold text-slate-700"
-                            >Nombre/Razón:</span
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase font-bold text-slate-500"
+                            >Nombre / Razón Social:</span
                         >
                         <span
                             id="doc-nombre"
-                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                            class="font-semibold text-slate-900 mt-1 text-sm"
                         ></span>
                     </div>
-                    <div class="flex">
-                        <span class="w-32 font-bold text-slate-700"
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase font-bold text-slate-500"
                             >Identificación:</span
                         >
                         <span
                             id="doc-rut"
-                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                            class="font-semibold text-slate-900 mt-1 text-sm"
                         ></span>
                     </div>
-                    <div class="flex">
-                        <span class="w-32 font-bold text-slate-700"
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase font-bold text-slate-500"
                             >Representante:</span
                         >
                         <span
                             id="doc-rep"
-                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                            class="font-semibold text-slate-900 mt-1 text-sm"
                         ></span>
                     </div>
-                    <div class="flex">
-                        <span class="w-32 font-bold text-slate-700">Email:</span
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase font-bold text-slate-500"
+                            >Correo Electrónico:</span
                         >
                         <span
                             id="doc-email"
-                            class="flex-1 font-medium text-slate-900 border-b border-slate-300 border-dotted"
+                            class="font-semibold text-slate-900 mt-1 text-sm"
                         ></span>
                     </div>
                 </div>
 
-                <p class="font-bold mb-2">
+                <p
+                    class="font-bold text-slate-800 mb-2 underline decoration-blue-200 underline-offset-4"
+                >
                     CLÁUSULA PRIMERA: OBJETO DEL CONTRATO
                 </p>
-                <p class="text-justify mb-4">
+                <p class="text-justify mb-5 text-slate-700">
                     EL PROVEEDOR se compromete a prestar a favor de EL CLIENTE
-                    los servicios de diseño y desarrollo web, mantenimiento o
-                    los servicios digitales específicos acordados previamente en
-                    la propuesta técnica y económica.
+                    los servicios de diseño y desarrollo de plataforma web,
+                    incluyendo estructura y funcionalidades acordadas
+                    previamente.
                 </p>
 
-                <p class="font-bold mb-2">
-                    CLÁUSULA SEGUNDA: OBLIGACIONES DE LAS PARTES
+                <p
+                    class="font-bold text-slate-800 mb-2 underline decoration-blue-200 underline-offset-4"
+                >
+                    CLÁUSULA SEGUNDA: CONDICIONES COMERCIALES Y DE PAGO
                 </p>
-                <p class="text-justify mb-4">
-                    1. EL PROVEEDOR se compromete a ejecutar los servicios con
-                    diligencia y en los plazos establecidos.<br />
-                    2. EL CLIENTE se compromete a facilitar toda la información necesaria
-                    (textos, imágenes, accesos) de forma oportuna y a cumplir con
-                    el cronograma de pagos acordado.<br />
-                    3. La demora en la entrega de material exime a EL PROVEEDOR de
-                    retrasos en la entrega del proyecto.
+                <p class="text-justify mb-5 text-slate-700 leading-normal">
+                    2.1. El costo total acordado por el servicio de desarrollo
+                    web asciende a la suma de <strong
+                        class="text-slate-900"
+                        id="doc-precio">S/ 0.00</strong
+                    >.<br />
+                    2.2. OBLIGATORIAMENTE se debe abonar un <strong
+                        >adelanto del 50%</strong
+                    > del monto total para dar inicio formal a los trabajos de desarrollo.<br
+                    />
+                    2.3. Modalidades de pago aceptadas: <strong
+                        >Billetera virtual (Yape o Plin)</strong
+                    > o por <strong
+                        >Transferencia bancaria Vía BCP o Interbank</strong
+                    >. Los datos exactos serán proporcionados en el comprobante
+                    fiscal.
                 </p>
 
-                <p class="font-bold mb-2">CLÁUSULA TERCERA: CONFIDENCIALIDAD</p>
-                <p class="text-justify mb-8">
+                <p
+                    class="font-bold text-slate-800 mb-2 underline decoration-blue-200 underline-offset-4"
+                >
+                    CLÁUSULA TERCERA: INCLUSIONES ESPECÍFICAS
+                </p>
+                <p class="text-justify mb-5 text-slate-700 leading-normal">
+                    3.1. <strong>Dominio y Hosting</strong>: El servicio
+                    ofrecido por EL PROVEEDOR incluye el registro del dominio
+                    web y el servicio de alojamiento (hosting) cubierto por el
+                    periodo de <strong>UN (1) AÑO</strong> a partir de su publicación.<br
+                    />
+                    3.2. <strong>Sesiones de Revisión</strong>: Todo proyecto
+                    contará explícitamente con <strong
+                        >TRES (3) rondas de revisión (sesiones)</strong
+                    > programadas, en las cuales EL CLIENTE levantará todas las observaciones
+                    consolidadas respecto al diseño y contenido.<br />
+                    3.3. <strong>Aprobación de Diseño</strong>: EL PROVEEDOR
+                    presentará un modelo o "Diseño Inicial" de la plataforma,
+                    que deberá ser aprobado formalmente por EL CLIENTE antes de
+                    proceder a la fase de programación (desarrollo).
+                </p>
+
+                <p
+                    class="font-bold text-slate-800 mb-2 underline decoration-blue-200 underline-offset-4"
+                >
+                    CLÁUSULA CUARTA: CONFIDENCIALIDAD
+                </p>
+                <p class="text-justify mb-5 text-slate-700">
                     Ambas partes mantendrán en estricta confidencialidad toda la
                     información manejada para el desarrollo de los proyectos y
                     no podrá ser revelada a terceros sin el consentimiento
@@ -298,7 +297,18 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                 // Fetch basic client
                 const { data: cliente, error } = await supabase
                     .from("clientes")
-                    .select("*, empresas(*)")
+                    .select(
+                        `
+                        *,
+                        empresas(
+                            *,
+                            factura(
+                                *,
+                                tipo_servicio(*)
+                            )
+                        )
+                    `
+                    )
                     .eq("id_cliente", clientId)
                     .single();
 
@@ -314,17 +324,8 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                     ? empresa.razon_social
                     : nombreCompleto;
                 const docEmpresa = empresa
-                    ? `RUC: ${empresa.numero_ruc}`
-                    : `${cliente.tipo_documento}: ${cliente.numero_documento}`;
-
-                // Populate Portada
-                document.getElementById("portada-cliente")!.textContent =
-                    nombreEmpresa;
-                if (empresa) {
-                    document.getElementById(
-                        "portada-empresa"
-                    )!.textContent = `Representante: ${nombreCompleto}`;
-                }
+                    ? `RUC ${empresa.numero_ruc}`
+                    : `${cliente.tipo_documento} ${cliente.numero_documento}`;
 
                 const dateOptions: Intl.DateTimeFormatOptions = {
                     year: "numeric",
@@ -344,6 +345,21 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                     : "(Mismo)";
                 document.getElementById("doc-email")!.textContent =
                     cliente.email || "N/A";
+
+                // Precios y montos desde Supabase (como en la factura)
+                let montoTotal = 0.0;
+                let descuento = 0.0;
+
+                if (empresa && empresa.factura && empresa.factura.length > 0) {
+                    const factura = empresa.factura[0]; // pick latest
+                    montoTotal = parseFloat(factura.monto);
+                    descuento = parseFloat(factura.descuento || 0);
+                }
+                const totalFinal = montoTotal - descuento;
+                document.getElementById("doc-precio")!.textContent =
+                    totalFinal > 0
+                        ? `S/ ${totalFinal.toFixed(2)}`
+                        : "S/ (A CUANTIFICAR)";
 
                 // Populate Signatures
                 document.getElementById("firma-cliente-nombre")!.textContent =
