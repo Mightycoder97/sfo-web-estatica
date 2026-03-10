@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impulsa tu negocio al siguiente nivel</title>
+    <!--[if mso]>
+<style>
+    table {border-collapse:collapse;border-spacing:0;margin:0;}
+    div, td {padding:0;}
+    div {margin:0 !important;}
+</style>
+<noscript>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+</noscript>
+<![endif]-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #fbfaf7;
+            color: #374151;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #fbfaf7;
+            padding: 40px 0;
+        }
+
+        .main {
+            background-color: #ffffff;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #eadfcd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-logo {
+            background-color: #ffffff;
+            padding: 0;
+            text-align: center;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            margin: 0;
+        }
+
+        .header-title {
+            background-color: #ffffff;
+            padding: 15px 40px 30px;
+            text-align: center;
+            border-bottom: 1px solid #f7f4ec;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-family: 'Outfit', Arial, sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            margin: 15px 0 0;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .content h2 {
+            font-family: 'Outfit', Arial, sans-serif;
+            color: #111827;
+            font-size: 22px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .content strong {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .promo-box {
+            background: #fbfaf7;
+            border: 1px solid #d9c2a8;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .promo-box .tag {
+            display: inline-block;
+            background-color: #9f6146;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .promo-box p.title {
+            font-family: 'Outfit', Arial, sans-serif;
+            color: #111827;
+            margin: 0;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .promo-box .price-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0 10px;
+        }
+
+        .promo-box .price-old {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
+        .promo-box .price {
+            font-family: 'Outfit', Arial, sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            color: #9f6146;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .promo-box .price small {
+            font-size: 24px;
+            font-weight: 600;
+            vertical-align: top;
+            position: relative;
+            top: 8px;
+        }
+
+        .promo-box p.desc {
+            color: #6b7280;
+            font-size: 15px;
+            margin: 10px 0 0 0;
+        }
+
+        .benefits-title {
+            font-family: 'Outfit', Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid #f7f4ec;
+            padding-bottom: 10px;
+        }
+
+        .benefit-icon {
+            background-color: #f7f4ec;
+            color: #9f6146;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .benefit-text h3 {
+            font-family: 'Outfit', Arial, sans-serif;
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .benefit-text p {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .cta-container {
+            text-align: center;
+            margin: 45px 0 10px;
+        }
+
+        .cta-button {
+            background-color: #25D366;
+            /* WhatsApp Green */
+            color: #ffffff;
+            font-family: 'Inter', Arial, sans-serif;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .cta-button span {
+            margin-left: 8px;
+        }
+
+        .guarantee {
+            background-color: #fbfaf7;
+            border-left: 4px solid #9f6146;
+            padding: 20px;
+            margin-top: 35px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .guarantee p {
+            margin: 0;
+            color: #374151;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 40px;
+            font-size: 13px;
+            color: #9ca3af;
+            background-color: #fefefe;
+            border-top: 1px solid #f7f4ec;
+        }
+
+        .footer a {
+            color: #9f6146;
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .main {
+                width: 100% !important;
+                border-radius: 0 !important;
+                border-left: none;
+                border-right: none;
+            }
+
+            .header-title,
+            .content,
+            .footer {
+                padding-left: 25px !important;
+                padding-right: 25px !important;
+            }
+
+            .promo-box .price {
+                font-size: 44px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td align="center">
+                <table class="main" width="600" cellpadding="0" cellspacing="0" role="presentation">
+
+                    <!-- PORTADA -->
+                    <tr>
+                        <td class="header-logo">
+                            <!-- Se asume que la portada está publicada en esta ruta -->
+                            <img src="https://www.sfoestudioweb.com/img/Portada.png" alt="SFO Estudio Web Portada"
+                                width="600" style="width: 100%; height: 200px; object-fit: cover; display: block;" />
+                        </td>
+                    </tr>
+
+                    <!-- HEADER TITLE -->
+                    <tr>
+                        <td class="header-title">
+                            <h1>Imagina tu negocio recibiendo clientes mientras duermes.</h1>
+                            <p>No construimos web, damos vida a la visión de tu empresa.</p>
+                        </td>
+                    </tr>
+
+                    <!-- CONTENT -->
+                    <tr>
+                        <td class="content">
+                            <h2>Tu sucursal digital abierta 24/7</h2>
+                            <p>Sabemos el sacrificio que pones en tu negocio todos los días. Ahora, imagina tener una
+                                presencia digital tan experta que tus clientes sientan <strong>absoluta confianza antes
+                                    de siquiera llamarte.</strong></p>
+                            <p>Mereces una web que trabaje por ti. Esa es la tranquilidad y el verdadero crecimiento que
+                                ofrecemos en SFO Estudio Web.</p>
+
+                            <!-- PROMO BOX -->
+                            <div class="promo-box">
+                                <span class="tag">Inversión Inteligente</span>
+                                <p class="title">Diseño y Desarrollo de Página Web</p>
+                                <div class="price-container">
+                                    <span class="price-old">S/ 600</span>
+                                    <div class="price"><small>S/</small> 299</div>
+                                </div>
+                                <p class="desc">Pago único. Impulsa tus ventas desde el primer día.</p>
+                            </div>
+
+                            <p class="benefits-title">Con el respaldo y las bondades de siempre:</p>
+
+                            <!-- BENEFITS LIST -->
+                            <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                                style="margin-bottom: 10px;">
+                                <tr>
+                                    <td width="45" valign="top" style="padding-bottom: 20px;">
+                                        <div class="benefit-icon">✓</div>
+                                    </td>
+                                    <td valign="top" class="benefit-text" style="padding-bottom: 20px;">
+                                        <h3>Paz Mental Garantizada</h3>
+                                        <p>Con <strong>Contrato y Factura</strong>. Claridad y seguridad desde el
+                                            inicio.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="45" valign="top" style="padding-bottom: 20px;">
+                                        <div class="benefit-icon">✓</div>
+                                    </td>
+                                    <td valign="top" class="benefit-text" style="padding-bottom: 20px;">
+                                        <h3>Trato de Excelencia</h3>
+                                        <p>Tu proyecto 100% <strong>hecho a tiempo</strong>. Respetamos tus plazos.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="45" valign="top">
+                                        <div class="benefit-icon">✓</div>
+                                    </td>
+                                    <td valign="top" class="benefit-text">
+                                        <h3>Acompañamiento 24/7</h3>
+                                        <p><strong>Soporte real</strong> y humano siempre que lo necesites.</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- GUARANTEE -->
+                            <div class="guarantee">
+                                <p><strong>Acta de Conformidad:</strong> Solo pagas si estás <strong>100% feliz</strong>
+                                    con el resultado. Tu satisfacción es nuestra prioridad compartida.</p>
+                            </div>
+
+                            <!-- CTA (WHATSAPP) -->
+                            <div class="cta-container">
+                                <!-- Enlace que dirige al WhatsApp con un mensaje predefinido -->
+                                <a href="https://wa.me/51949063359?text=Hola,%20estoy%20interesado%20en%20la%20promoci%C3%B3n%20de%20dise%C3%B1o%20y%20desarrollo%20web%20por%20S/299"
+                                    class="cta-button">
+                                    Contactarme con un asesor
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- FOOTER -->
+                    <tr>
+                        <td class="footer">
+                            <p style="margin: 0 0 10px 0;">Estás recibiendo este correo porque eres parte de nuestra
+                                red.</p>
+                            <p style="margin: 0;">© 2026 <strong>SFO ESTUDIO WEB</strong><br />
+                                <a href="mailto:contacto@sfoestudioweb.com">contacto@sfoestudioweb.com</a> | +51 949 063
+                                359<br />
+                                Las Cerezas 390, Santiago de Surco, Lima
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
