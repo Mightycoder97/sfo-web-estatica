@@ -854,7 +854,7 @@ import AdminLayout from "../layouts/AdminLayout.astro";
         };
         btnCloseModalTrack?.addEventListener("click", closeTrackModal);
 
-        (window as any).window.openClientTracking = async (
+        (window as any).openClientTracking = async (
             clientId: string
         ) => {
             trackClientIdInput.value = clientId;
@@ -868,10 +868,18 @@ import AdminLayout from "../layouts/AdminLayout.astro";
         const loadCatalogIntoSelect = async () => {
             try {
                 const { data, error } = await supabase
-                    .from("tipo_servicio")
+                    .from("tipo_servicio_catalogo")
                     .select("id_servicio, nombre, precio_base")
                     .order("nombre");
-                if (error) throw error;
+                if (error) {
+                    console.error("Supabase catalog error details:", {
+                        code: error.code,
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                    });
+                    throw error;
+                }
 
                 selectNewService.innerHTML =
                     '<option value="" disabled selected>Seleccione un servicio del catálogo...</option>';
@@ -890,15 +898,23 @@ import AdminLayout from "../layouts/AdminLayout.astro";
             try {
                 const { data, error } = await supabase
                     .from("cliente_servicio")
-                    .select("*, tipo_servicio(*)")
+                    .select("*, tipo_servicio_catalogo(*)")
                     .eq("id_cliente", clientId)
                     .order("created_at", { ascending: false });
 
-                if (error) throw error;
+                if (error) {
+                    console.error("Supabase tracking error details:", {
+                        code: error.code,
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                    });
+                    throw error;
+                }
                 renderClientTrackProjects(data || []);
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Error fetching projects tracking", err);
-                clientProjectsList!.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded">Error al cargar proyectos.</div>`;
+                clientProjectsList!.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded">Error al cargar proyectos: ${err?.message || 'Error desconocido'}</div>`;
             }
         };
 
@@ -912,7 +928,7 @@ import AdminLayout from "../layouts/AdminLayout.astro";
             }
 
             projects.forEach((proj) => {
-                const srv = proj.tipo_servicio;
+                const srv = proj.tipo_servicio_catalogo;
                 const statusOptions = ESTADOS_PROGRESO.map(
                     (estado) =>
                         `<option value="${estado}" ${
