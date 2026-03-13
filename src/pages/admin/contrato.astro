@@ -168,10 +168,29 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                 </p>
                 <p class="text-justify mb-5 text-slate-700">
                     EL PROVEEDOR se compromete a prestar a favor de EL CLIENTE
-                    los servicios de diseño y desarrollo de plataforma web,
-                    incluyendo estructura y funcionalidades acordadas
-                    previamente.
+                    los servicios de <strong id="doc-servicio-nombre">diseño y desarrollo de plataforma web</strong>,
+                    <span id="doc-servicio-desc">incluyendo estructura y funcionalidades acordadas
+                    previamente</span>.
                 </p>
+
+                <!-- Detalle del proyecto asignado -->
+                <div id="doc-proyecto-detalle" class="hidden bg-blue-50/50 p-4 rounded border border-blue-100 mb-5">
+                    <p class="text-xs uppercase font-bold text-slate-500 mb-2">Detalle del Proyecto Asignado</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <span class="text-xs text-slate-500">Servicio:</span>
+                            <p id="doc-proyecto-titulo" class="font-semibold text-sm text-slate-900"></p>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500">Costo Base:</span>
+                            <p id="doc-proyecto-costo" class="font-semibold text-sm text-blue-700"></p>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-xs text-slate-500">Descripción:</span>
+                            <p id="doc-proyecto-descripcion" class="text-sm text-slate-700"></p>
+                        </div>
+                    </div>
+                </div>
 
                 <p
                     class="font-bold text-slate-800 mb-2 underline decoration-blue-200 underline-offset-4"
@@ -179,15 +198,16 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                     CLÁUSULA SEGUNDA: CONDICIONES COMERCIALES Y DE PAGO
                 </p>
                 <p class="text-justify mb-5 text-slate-700 leading-normal">
-                    2.1. El costo total acordado por el servicio de desarrollo
-                    web asciende a la suma de <strong
+                    2.1. El costo total acordado por el servicio contratado
+                    asciende a la suma de <strong
                         class="text-slate-900"
-                        id="doc-precio">S/ 0.00</strong
+                        id="doc-precio">S/ (A CUANTIFICAR)</strong
                     >.<br />
                     2.2. OBLIGATORIAMENTE se debe abonar un
-                    <strong>adelanto del 30% (S/ 100.00 nuevos soles)</strong>
+                    <strong>adelanto del 30% (<span id="doc-adelanto">S/ (A CUANTIFICAR)</span> nuevos soles)</strong>
                     del monto total para dar inicio formal a los trabajos de desarrollo.
-                    Una vez culminado el proyecto y cancelado el saldo restante,
+                    Una vez culminado el proyecto y cancelado el saldo restante de
+                    <strong><span id="doc-saldo">S/ (A CUANTIFICAR)</span></strong>,
                     EL PROVEEDOR hará entrega inmediata de las respectivas <strong
                         >credenciales de acceso</strong
                     >.<br />
@@ -297,25 +317,21 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             if (!supabase) return;
 
             try {
-                // Fetch basic client
+                // Fetch client with empresa data
                 const { data: cliente, error } = await supabase
                     .from("clientes")
-                    .select(
-                        `
-                        *,
-                        empresas(
-                            *,
-                            factura(
-                                *,
-                                tipo_servicio(*)
-                            )
-                        )
-                    `
-                    )
+                    .select(`*, empresas(*)`)
                     .eq("id_cliente", clientId)
                     .single();
-
                 if (error) throw error;
+
+                // Fetch assigned projects from cliente_servicio
+                const { data: proyectos, error: errProy } = await supabase
+                    .from("cliente_servicio")
+                    .select("*, tipo_servicio_catalogo(*)")
+                    .eq("id_cliente", clientId)
+                    .order("created_at", { ascending: false });
+                if (errProy) console.error("Error fetching projects:", errProy);
 
                 const empresa =
                     cliente.empresas && cliente.empresas.length > 0
@@ -338,49 +354,58 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                 document.getElementById("portada-fecha")!.textContent =
                     new Date().toLocaleDateString("es-ES", dateOptions);
 
-                // Populate Document
-                document.getElementById("doc-nombre")!.textContent =
-                    nombreEmpresa;
-                document.getElementById("doc-rut")!.textContent =
-                    docEmpresa.replace(":", "");
-                document.getElementById("doc-rep")!.textContent = empresa
-                    ? nombreCompleto
-                    : "(Mismo)";
-                document.getElementById("doc-email")!.textContent =
-                    cliente.email || "N/A";
+                // Populate client info
+                document.getElementById("doc-nombre")!.textContent = nombreEmpresa;
+                document.getElementById("doc-rut")!.textContent = docEmpresa.replace(":", "");
+                document.getElementById("doc-rep")!.textContent = empresa ? nombreCompleto : "(Mismo)";
+                document.getElementById("doc-email")!.textContent = cliente.email || "N/A";
 
-                // Precios y montos desde Supabase (como en la factura)
-                let montoTotal = 0.0;
-                let descuento = 0.0;
+                // --- PROJECT DATA ---
+                let costoProyecto = 0;
 
-                if (empresa && empresa.factura && empresa.factura.length > 0) {
-                    const factura = empresa.factura[0]; // pick latest
-                    montoTotal = parseFloat(factura.monto);
-                    descuento = parseFloat(factura.descuento || 0);
+                if (proyectos && proyectos.length > 0) {
+                    const proyecto = proyectos[0]; // Latest assigned project
+                    const srv = proyecto.tipo_servicio_catalogo;
+
+                    if (srv) {
+                        costoProyecto = parseFloat(srv.precio_base) || 0;
+
+                        // Cláusula Primera: nombre y descripción del servicio
+                        document.getElementById("doc-servicio-nombre")!.textContent = srv.nombre;
+                        document.getElementById("doc-servicio-desc")!.textContent =
+                            srv.descripcion || "según los requerimientos especificados en propuesta comercial";
+
+                        // Project detail box
+                        document.getElementById("doc-proyecto-detalle")!.classList.remove("hidden");
+                        document.getElementById("doc-proyecto-titulo")!.textContent = srv.nombre;
+                        document.getElementById("doc-proyecto-costo")!.textContent = `S/ ${costoProyecto.toFixed(2)}`;
+                        document.getElementById("doc-proyecto-descripcion")!.textContent =
+                            srv.descripcion || "Sin descripción adicional";
+                    }
                 }
-                const totalFinal = montoTotal - descuento;
-                document.getElementById("doc-precio")!.textContent =
-                    totalFinal > 0
-                        ? `S/ ${totalFinal.toFixed(2)}`
-                        : "S/ (A CUANTIFICAR)";
+
+                // --- PRICING ---
+                const formatMoney = (n: number) => `S/ ${n.toFixed(2)}`;
+
+                if (costoProyecto > 0) {
+                    const adelanto = costoProyecto * 0.30;
+                    const saldo = costoProyecto - adelanto;
+
+                    document.getElementById("doc-precio")!.textContent = formatMoney(costoProyecto);
+                    document.getElementById("doc-adelanto")!.textContent = formatMoney(adelanto);
+                    document.getElementById("doc-saldo")!.textContent = formatMoney(saldo);
+                }
 
                 // Populate Signatures
-                document.getElementById("firma-cliente-nombre")!.textContent =
-                    nombreCompleto;
-                document.getElementById(
-                    "firma-cliente-doc"
-                )!.textContent = `${cliente.tipo_documento}: ${cliente.numero_documento}`;
+                document.getElementById("firma-cliente-nombre")!.textContent = nombreCompleto;
+                document.getElementById("firma-cliente-doc")!.textContent =
+                    `${cliente.tipo_documento}: ${cliente.numero_documento}`;
 
                 // Show document content, hide loader
                 document.getElementById("loading")!.classList.add("hidden");
-                document
-                    .getElementById("document-content")!
-                    .classList.remove("hidden");
+                document.getElementById("document-content")!.classList.remove("hidden");
             } catch (error) {
-                console.error(
-                    "Error loading client details for contract:",
-                    error
-                );
+                console.error("Error loading client details for contract:", error);
                 alert("Hubo un error cargando los datos del cliente");
             }
         });
