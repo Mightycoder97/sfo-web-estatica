@@ -1,0 +1,314 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Catálogo de Servicios">
+    <!-- UI ESTADO: CARGANDO -->
+    <div id="ui-loading" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-50 transition-opacity duration-300">
+        <div class="bg-white/80 p-6 rounded-2xl shadow-xl flex flex-col items-center space-y-4">
+            <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-slate-700 font-medium">Autenticando...</p>
+        </div>
+    </div>
+
+    <!-- UI ESTADO: LOGIN -->
+    <div id="ui-login" class="hidden min-h-screen flex items-center justify-center bg-[url('/img/portada.jpg')] bg-cover bg-center relative">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="relative z-10 w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl overflow-hidden">
+            <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"></div>
+            <div class="text-center">
+                <img src="/img/logo_sfo.png" alt="SFO Estudio Web" class="h-16 mx-auto mb-6 brightness-0 invert drop-shadow-md" />
+                <h1 class="text-3xl font-bold text-white mb-2 font-['Outfit']">Acceso Restringido</h1>
+                <p class="text-white/80 mb-8 text-sm">Panel administrativo exclusivo.</p>
+                <button id="btn-login" class="w-full bg-white text-slate-900 font-semibold py-3.5 px-4 rounded-xl shadow-lg hover:bg-slate-50 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                    <span>Iniciar Sesión Segura</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI ESTADO: DASHBOARD -->
+    <div id="ui-dashboard" class="hidden min-h-screen bg-slate-50 flex flex-col">
+        <!-- Top Navigation -->
+        <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center space-x-4">
+                        <img src="/img/logo_sfo.png" alt="SFO Logo" class="h-8 w-auto filter drop-shadow" />
+                        <span class="font-['Outfit'] font-bold text-xl text-slate-800 tracking-tight">Admin<span class="text-blue-600">Panel</span></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex flex-col text-right hidden sm:block">
+                            <span id="user-name" class="text-sm font-semibold text-slate-700 block">Cargando...</span>
+                            <span id="user-email" class="text-xs text-slate-500 block">...</span>
+                        </div>
+                        <img id="user-picture" src="" alt="Avatar" class="h-9 w-9 rounded-full ring-2 ring-blue-100 hidden sm:block cursor-pointer hover:ring-blue-300 transition-all object-cover" />
+                        <button id="btn-logout" class="ml-4 text-slate-500 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-red-50" title="Cerrar Sesión">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tab Navigation -->
+        <div class="bg-white border-b border-slate-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav class="flex space-x-1 -mb-px" aria-label="Tabs">
+                    <a href="/admin" class="px-4 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 border-transparent transition-colors">Clientes</a>
+                    <a href="/admin/catalogo" class="px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600 transition-colors">Catálogo Servicios</a>
+                    <a href="/admin/facturas" class="px-4 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300 border-b-2 border-transparent transition-colors">Facturas</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 font-['Outfit']">Catálogo de Servicios</h2>
+                    <p class="text-slate-500 text-sm mt-1">Administra los tipos de proyectos disponibles para asignar a clientes.</p>
+                </div>
+                <button id="btn-new-service" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium shadow-sm shadow-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span>Nuevo Servicio</span>
+                </button>
+            </div>
+
+            <!-- Services Grid -->
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic content -->
+            </div>
+            <div id="empty-state-services" class="hidden flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-slate-200">
+                <div class="bg-purple-50 p-4 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <h3 class="text-lg font-medium text-slate-900">No hay servicios en el catálogo</h3>
+                <p class="mt-1 text-sm text-slate-500">Agrega tu primer tipo de servicio para poder asignarlo a tus clientes.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL SERVICIO (Crear / Editar) -->
+    <dialog id="modal-service" class="bg-transparent p-0 m-auto w-full max-w-md backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm open:animate-in open:fade-in open:zoom-in-95">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden w-full m-4">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="text-lg font-bold text-slate-900 font-['Outfit']" id="modal-title-service">Nuevo Servicio</h3>
+                <button type="button" id="btn-close-modal-service" class="text-slate-400 hover:text-slate-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="form-service" class="p-6 space-y-4">
+                <input type="hidden" id="service-id" name="id" />
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Nombre del Servicio <span class="text-red-500">*</span></label>
+                    <input type="text" id="service-nombre" required class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none" placeholder="Ej: Landing Page, Tienda Online..." />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Descripción</label>
+                    <textarea id="service-descripcion" rows="3" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none resize-none" placeholder="Describe brevemente el servicio..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Precio Base (S/) <span class="text-red-500">*</span></label>
+                    <input type="number" id="service-precio" required min="0" step="0.01" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm outline-none" placeholder="0.00" />
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" id="btn-cancel-modal-service" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancelar</button>
+                    <button type="submit" id="btn-save-service" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors flex items-center space-x-2">
+                        <span>Guardar Servicio</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <script>
+        import { getAuth0Client } from "../../lib/authClient";
+        import { getSupabaseClient } from "../../lib/supabaseClient";
+
+        const uiLoading = document.getElementById("ui-loading");
+        const uiLogin = document.getElementById("ui-login");
+        const uiDashboard = document.getElementById("ui-dashboard");
+        const btnLogin = document.getElementById("btn-login");
+        const btnLogout = document.getElementById("btn-logout");
+        const userName = document.getElementById("user-name");
+        const userEmail = document.getElementById("user-email");
+        const userPicture = document.getElementById("user-picture") as HTMLImageElement;
+
+        const servicesGrid = document.getElementById("services-grid");
+        const emptyStateServices = document.getElementById("empty-state-services");
+        const btnNewService = document.getElementById("btn-new-service");
+        const modalService = document.getElementById("modal-service") as HTMLDialogElement;
+        const formService = document.getElementById("form-service") as HTMLFormElement;
+        const btnCloseModalService = document.getElementById("btn-close-modal-service");
+        const btnCancelModalService = document.getElementById("btn-cancel-modal-service");
+        const modalTitleService = document.getElementById("modal-title-service");
+
+        let auth0: any = null;
+        let supabase: any = null;
+
+        const initAuth = async () => {
+            try {
+                auth0 = await getAuth0Client();
+                if (!auth0) throw new Error("Missing Auth0 configuration.");
+
+                if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
+                    await auth0.handleRedirectCallback();
+                    window.history.replaceState({}, document.title, "/admin/catalogo");
+                }
+
+                const isAuthenticated = await auth0.isAuthenticated();
+                if (isAuthenticated) {
+                    const user = await auth0.getUser();
+                    if (userName) userName.textContent = user?.name || "Admin";
+                    if (userEmail) userEmail.textContent = user?.email || "";
+                    if (userPicture && user?.picture) { userPicture.src = user.picture; userPicture.classList.remove("hidden"); }
+
+                    uiLogin?.classList.add("hidden");
+                    uiDashboard?.classList.remove("hidden");
+                    supabase = getSupabaseClient();
+                    if (supabase) await loadServices();
+                } else {
+                    uiDashboard?.classList.add("hidden");
+                    uiLogin?.classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error("Auth error:", error);
+                uiDashboard?.classList.add("hidden");
+                uiLogin?.classList.remove("hidden");
+            } finally {
+                uiLoading?.classList.add("hidden");
+            }
+        };
+
+        const loadServices = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("tipo_servicio_catalogo")
+                    .select("*")
+                    .order("nombre");
+                if (error) throw error;
+                renderServices(data || []);
+            } catch (err) {
+                console.error("Error loading services:", err);
+            }
+        };
+
+        const renderServices = (services: any[]) => {
+            if (!servicesGrid || !emptyStateServices) return;
+            servicesGrid.innerHTML = "";
+
+            if (services.length === 0) {
+                emptyStateServices.classList.remove("hidden");
+                return;
+            }
+            emptyStateServices.classList.add("hidden");
+
+            services.forEach((srv: any) => {
+                const card = document.createElement("div");
+                card.className = "bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-blue-200 transition-all group";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="bg-gradient-to-br from-blue-100 to-indigo-100 p-3 rounded-xl">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <span class="text-xl font-bold text-blue-600 font-['Outfit']">S/ ${parseFloat(srv.precio_base).toFixed(2)}</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">${srv.nombre}</h3>
+                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">${srv.descripcion || 'Sin descripción'}</p>
+                    <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+                        <button onclick="window.editService('${srv.id_servicio}')" class="text-amber-600 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg transition-colors border border-amber-100 text-xs font-medium flex items-center space-x-1" title="Editar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            <span>Editar</span>
+                        </button>
+                        <button onclick="window.deleteService('${srv.id_servicio}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors border border-red-100 text-xs font-medium flex items-center space-x-1" title="Eliminar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <span>Eliminar</span>
+                        </button>
+                    </div>
+                `;
+                servicesGrid.appendChild(card);
+            });
+        };
+
+        // Modal logic
+        const closeServiceModal = () => { modalService?.close(); formService?.reset(); };
+        btnCloseModalService?.addEventListener("click", closeServiceModal);
+        btnCancelModalService?.addEventListener("click", closeServiceModal);
+
+        btnNewService?.addEventListener("click", () => {
+            if (modalTitleService) modalTitleService.textContent = "Nuevo Servicio";
+            formService?.reset();
+            (document.getElementById("service-id") as HTMLInputElement).value = "";
+            modalService?.showModal();
+        });
+
+        formService?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btn-save-service") as HTMLButtonElement;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="w-5 h-5 animate-spin mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+
+            const id = (document.getElementById("service-id") as HTMLInputElement).value;
+            const payload = {
+                nombre: (document.getElementById("service-nombre") as HTMLInputElement).value,
+                descripcion: (document.getElementById("service-descripcion") as HTMLTextAreaElement).value,
+                precio_base: parseFloat((document.getElementById("service-precio") as HTMLInputElement).value),
+            };
+
+            try {
+                if (id) {
+                    const { error } = await supabase.from("tipo_servicio_catalogo").update(payload).eq("id_servicio", id);
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabase.from("tipo_servicio_catalogo").insert([payload]);
+                    if (error) throw error;
+                }
+                closeServiceModal();
+                await loadServices();
+            } catch (err: any) {
+                console.error("Error saving service:", err);
+                alert("Error al guardar servicio: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        (window as any).editService = async (id: string) => {
+            try {
+                const { data, error } = await supabase.from("tipo_servicio_catalogo").select("*").eq("id_servicio", id).single();
+                if (error) throw error;
+                if (modalTitleService) modalTitleService.textContent = "Editar Servicio";
+                (document.getElementById("service-id") as HTMLInputElement).value = data.id_servicio;
+                (document.getElementById("service-nombre") as HTMLInputElement).value = data.nombre;
+                (document.getElementById("service-descripcion") as HTMLTextAreaElement).value = data.descripcion || "";
+                (document.getElementById("service-precio") as HTMLInputElement).value = data.precio_base;
+                modalService?.showModal();
+            } catch (err) {
+                console.error("Error loading service:", err);
+                alert("Error al cargar servicio.");
+            }
+        };
+
+        (window as any).deleteService = async (id: string) => {
+            if (confirm("¿Eliminar este servicio del catálogo? Los proyectos asignados no se verán afectados.")) {
+                try {
+                    const { error } = await supabase.from("tipo_servicio_catalogo").delete().eq("id_servicio", id);
+                    if (error) throw error;
+                    await loadServices();
+                } catch (err: any) {
+                    console.error("Error deleting service:", err);
+                    alert("Error al eliminar: " + err.message);
+                }
+            }
+        };
+
+        btnLogin?.addEventListener("click", async () => { if (auth0) await auth0.loginWithRedirect(); });
+        btnLogout?.addEventListener("click", async () => { if (auth0) await auth0.logout({ logoutParams: { returnTo: window.location.origin + "/admin" } }); });
+
+        document.addEventListener("DOMContentLoaded", () => { initAuth(); });
+    </script>
+</AdminLayout>
