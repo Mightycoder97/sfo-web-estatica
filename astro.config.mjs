@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sfo-estudio.com', // Reemplazar con el dominio real
+  site: 'https://sfoestudioweb.com', // Reemplazar con el dominio real
   vite: {
     plugins: [tailwindcss()]
   },

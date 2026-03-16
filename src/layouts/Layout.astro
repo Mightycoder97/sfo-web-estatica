@@ -23,29 +23,29 @@ const { title, description = "Sebastian Retamozo - Software Engineer & UX/UI Des
 		<meta name="description" content={description} />
 		
 		<!-- Canonical URL -->
-		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site || 'https://sfo-estudio.com')} />
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site || 'https://sfoestudioweb.com')} />
 
 		<!-- Open Graph / Meta -->
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={Astro.url} />
-		<meta property="og:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com')} />
+		<meta property="og:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfoestudioweb.com')} />
 
 		<!-- Twitter Cards -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com')} />
+		<meta name="twitter:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfoestudioweb.com')} />
 
 		<!-- JSON-LD Schema (LocalBusiness / ProfessionalService) -->
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "ProfessionalService",
 			"name": "SFO Estudio Web",
-			"image": new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com').toString(),
+			"image": new URL('/img/perfil.jpeg', Astro.site || 'https://sfoestudioweb.com').toString(),
 			"description": description,
-			"url": (Astro.site || 'https://sfo-estudio.com').toString(),
+			"url": (Astro.site || 'https://sfoestudioweb.com').toString(),
 			"founder": {
 				"@type": "Person",
 				"name": "Sebastián Retamozo"
@@ -62,9 +62,9 @@ const { title, description = "Sebastian Retamozo - Software Engineer & UX/UI Des
 		/>
 
 		<!-- GSAP para animaciones de scroll de alto impacto -->
-		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-		<script is:inline>
+		<script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<script is:inline type="module">
 			// Registrar plugins
 			document.addEventListener("DOMContentLoaded", () => {
 				gsap.registerPlugin(ScrollTrigger);
