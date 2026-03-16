@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
+import AboutMe from "../components/AboutMe.astro";
 import PortfolioPreview from "../components/PortfolioPreview.astro";
 import Services from "../components/Services.astro";
 import Features from "../components/Features.astro";
@@ -9,14 +10,15 @@ import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
 ---
 
-<Layout title="SFO ESTUDIO WEB - Creación de Páginas Web Profesionales">
+<Layout title="SFO Estudio Web | Desarrollo de Software y Diseño UX/UI">
 	<Header />
 
-	<main>
+	<main class="overflow-x-hidden">
 		<Hero />
 		<PortfolioPreview />
 		<Features />
 		<Services />
+		<AboutMe />
 		<CTA />
 	</main>
 

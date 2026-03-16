@@ -1,30 +1,32 @@
 ---
 const links = [
     { name: "Inicio", href: "/" },
-    { name: "Servicios", href: "#servicios" },
     { name: "Beneficios", href: "#beneficios" },
-    { name: "Portafolio", href: "/portafolio" },
+    { name: "SFO", href: "#nosotros" },
+    { name: "Portafolio", href: "#portafolio" },
+    { name: "Servicios", href: "#servicios" },
 ];
 ---
 
 <header
-    class="fixed top-0 w-full z-50 transition-all duration-300 glass"
+    class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-lg border-b border-gray-100"
     id="navbar"
 >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
-            <!-- Logo -->
+            <!-- Logo Personal -->
             <div class="flex-shrink-0 flex items-center">
-                <a href="/" class="flex items-center gap-2 group">
-                    <img
-                        src="/img/logo_sfo.png"
-                        alt="SFO ESTUDIO WEB"
-                        class="h-10 object-contain transition-transform group-hover:scale-105"
+                <a href="/" class="flex items-center gap-3 group">
+                    <img 
+                        src="/img/logo_sin_fondo.jpeg" 
+                        alt="SFO Estudio Web" 
+                        class="h-14 w-auto object-contain transition-transform group-hover:scale-105"
                     />
                     <span
-                        class="font-heading font-bold text-xl tracking-tight text-gray-900 group-hover:text-primary-600 transition-colors hidden sm:block"
-                        >SFO ESTUDIO WEB</span
+                        class="font-heading font-black text-xl tracking-tight text-gray-900 transition-colors hidden sm:block delay-75"
                     >
+                        SFO Estudio <span class="text-primary-600">Web</span>
+                    </span>
                 </a>
             </div>
 
@@ -34,7 +36,7 @@ const links = [
                     links.map((link) => (
                         <a
                             href={link.href}
-                            class="text-gray-600 hover:text-primary-600 font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-right hover:after:origin-left"
+                            class="text-gray-600 hover:text-primary-600 font-medium transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary-600 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-right hover:after:origin-left"
                         >
                             {link.name}
                         </a>
@@ -42,9 +44,9 @@ const links = [
                 }
                 <a
                     href="#contacto"
-                    class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-primary-600 hover:bg-primary-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                    class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-full text-white bg-gray-900 hover:bg-black shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                 >
-                    Solicitar Presupuesto
+                    Cotizar Proyecto
                 </a>
             </nav>
 
@@ -52,25 +54,19 @@ const links = [
             <div class="flex items-center md:hidden">
                 <button
                     type="button"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 transition-colors"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-primary-600 focus:outline-none transition-colors"
                     aria-expanded="false"
+                    aria-label="Menú principal de navegación móvil"
                     id="mobile-menu-button"
                 >
-                    <span class="sr-only">Abrir menú principal</span>
-                    <!-- Icon Menu -->
+                    <span class="sr-only">Abrir menú</span>
                     <svg
                         class="block h-6 w-6"
-                        xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        aria-hidden="true"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
             </div>
@@ -79,15 +75,15 @@ const links = [
 
     <!-- Mobile Menu -->
     <div
-        class="md:hidden hidden bg-white border-t border-gray-100 shadow-lg"
+        class="md:hidden hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-2xl absolute w-full"
         id="mobile-menu"
     >
-        <div class="px-4 pt-2 pb-4 space-y-1 sm:px-3">
+        <div class="px-4 pt-2 pb-6 space-y-1 sm:px-3">
             {
                 links.map((link) => (
                     <a
                         href={link.href}
-                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors"
+                        class="block px-3 py-3 rounded-xl text-base font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                     >
                         {link.name}
                     </a>
@@ -95,22 +91,22 @@ const links = [
             }
             <a
                 href="#contacto"
-                class="block w-full text-center px-5 py-3 mt-4 font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors"
+                class="block w-full text-center px-5 py-3.5 mt-4 font-bold text-white bg-gray-900 hover:bg-black rounded-xl transition-colors shadow-md"
             >
-                Solicitar Presupuesto
+                Cotizar Proyecto
             </a>
         </div>
     </div>
 </header>
 
 <script>
-    // Simple scroll effect for navbar
+    // Header shadow on scroll
     const navbar = document.getElementById("navbar");
     window.addEventListener("scroll", () => {
         if (window.scrollY > 20) {
-            navbar?.classList.add("shadow-md");
+            navbar?.classList.add("shadow-sm");
         } else {
-            navbar?.classList.remove("shadow-md");
+            navbar?.classList.remove("shadow-sm");
         }
     });
 

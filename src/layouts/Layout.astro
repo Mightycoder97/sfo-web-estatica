@@ -8,7 +8,7 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "A premium template for local businesses." } =
+const { title, description = "Sebastian Retamozo - Software Engineer & UX/UI Designer. Experto en diseño y desarrollo web de alto impacto." } =
 	Astro.props;
 ---
 
@@ -17,20 +17,61 @@ const { title, description = "A premium template for local businesses." } =
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/png" href="/img/logo_sfo.png" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site || 'https://sfo-estudio.com')} />
+
+		<!-- Open Graph / Meta -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com')} />
+
+		<!-- Twitter Cards -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com')} />
+
+		<!-- JSON-LD Schema (LocalBusiness / ProfessionalService) -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "ProfessionalService",
+			"name": "SFO Estudio Web",
+			"image": new URL('/img/perfil.jpeg', Astro.site || 'https://sfo-estudio.com').toString(),
+			"description": description,
+			"url": (Astro.site || 'https://sfo-estudio.com').toString(),
+			"founder": {
+				"@type": "Person",
+				"name": "Sebastián Retamozo"
+			},
+			"priceRange": "$$"
+		})} />
 
 		<!-- Google Fonts: Inter and Outfit -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800;900&display=swap"
 			rel="stylesheet"
 		/>
+
+		<!-- GSAP para animaciones de scroll de alto impacto -->
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<script is:inline>
+			// Registrar plugins
+			document.addEventListener("DOMContentLoaded", () => {
+				gsap.registerPlugin(ScrollTrigger);
+			});
+		</script>
 	</head>
-	<body class="flex flex-col min-h-screen">
+	<body class="flex flex-col min-h-screen selection:bg-primary-500 selection:text-white">
 		<slot />
 		<Analytics />
 		<SpeedInsights />

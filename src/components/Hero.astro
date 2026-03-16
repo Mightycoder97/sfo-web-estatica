@@ -1,155 +1,97 @@
 ---
 ---
 
-<section class="relative pt-28 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-    <div class="absolute inset-0 bg-white" aria-hidden="true"></div>
-    <div
-        class="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] rounded-full bg-primary-50/50 blur-3xl opacity-50 pointer-events-none"
-        aria-hidden="true"
-    >
-    </div>
-    <div
-        class="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] rounded-full bg-primary-100/40 blur-3xl opacity-50 pointer-events-none"
-        aria-hidden="true"
-    >
-    </div>
+<section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gray-50">
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            <div class="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
-                <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-sm font-medium mb-8 animate-fade-in-up"
-                >
-                    <span
-                        class="flex h-2 w-2 rounded-full bg-primary-600 mr-2 animate-pulse"
-                    ></span>
-                    Tu Sucursal Digital Abierta 24/7
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            <!-- Texto Izquierda -->
+            <div class="max-w-2xl text-center lg:text-left mx-auto lg:mx-0 z-10 hero-text-content">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-gray-200 text-gray-800 text-sm font-semibold mb-6 shadow-sm hero-stagger" style="opacity: 0; transform: translateY(40px);">
+                    <span class="flex h-2 w-2 rounded-full bg-green-500 mr-3 animate-pulse"></span>
+                    Agencia Disponible para Proyectos
                 </div>
 
-                <h1
-                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-gray-900 leading-tight mb-6 animate-fade-in-up"
-                    style="animation-delay: 100ms;"
-                >
-                    Imagina tu negocio recibiendo <span class="text-gradient"
-                        >clientes mientras duermes</span
-                    >.
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-gray-900 leading-[1.1] mb-6 hero-stagger" style="opacity: 0; transform: translateY(40px);">
+                    Diseño Web de <br class="hidden lg:block"/> <span class="text-gradient">Alto Impacto</span>.
                 </h1>
 
-                <p
-                    class="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed animate-fade-in-up"
-                    style="animation-delay: 200ms;"
-                >
-                    No construimos "páginas web", damos vida a esa visión que
-                    tienes de tu empresa. Una presencia digital tan magnética y
-                    profesional que tus futuros clientes sentirán total
-                    confianza antes de siquiera llamarte.
+                <p class="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed font-light hero-stagger" style="opacity: 0; transform: translateY(40px);">
+                    Bienvenido a <strong class="font-bold text-gray-900">SFO Estudio Web</strong>. Somos una agencia experta en UX/UI y desarrollo de software con enfoque fresco y dedicada a transformar ideas en plataformas web extraordinarias orientadas cien por ciento a ventas.
                 </p>
 
-                <div
-                    class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up"
-                    style="animation-delay: 300ms;"
-                >
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start hero-stagger" style="opacity: 0; transform: translateY(40px);">
                     <a
                         href="#contacto"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-semibold rounded-full text-white bg-primary-600 hover:bg-primary-700 shadow-xl hover:shadow-primary-600/30 transform hover:-translate-y-1 transition-all duration-300"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-bold rounded-full text-white bg-gray-900 hover:bg-black shadow-xl hover:shadow-gray-900/30 transform hover:-translate-y-1 transition-all duration-300"
                     >
-                        Hagamos realidad tu proyecto
-                        <svg
-                            class="ml-2 -mr-1 w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
+                        Cotizar mi Proyecto
+                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>
                     <a
-                        href="#proyectos"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-semibold rounded-full text-gray-700 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
+                        href="#portafolio"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-semibold rounded-full text-gray-800 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
                     >
-                        Ver Casos de Éxito
+                        Ver Portafolio
                     </a>
                 </div>
 
-                <div
-                    class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-gray-100 pt-8 animate-fade-in-up"
-                    style="animation-delay: 400ms;"
-                >
+                <!-- Stats / Trust Indicators -->
+                <div class="mt-12 grid grid-cols-3 gap-4 border-t border-gray-200 pt-8 hero-stagger" style="opacity: 0; transform: translateY(40px);">
                     <div>
-                        <p
-                            class="text-3xl font-heading font-bold text-primary-600"
-                        >
-                            Paz
-                        </p>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Contrato y Factura
-                        </p>
+                        <p class="text-4xl font-heading font-black text-primary-600">+1</p>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1 font-medium uppercase tracking-wider">Año Exp.</p>
                     </div>
                     <div>
-                        <p
-                            class="text-3xl font-heading font-bold text-primary-600"
-                        >
-                            Trato
-                        </p>
-                        <p class="text-sm text-gray-500 mt-1">Hecho a tiempo</p>
+                        <p class="text-4xl font-heading font-black text-primary-600">UX/UI</p>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1 font-medium uppercase tracking-wider">Diseño Premium</p>
                     </div>
                     <div>
-                        <p
-                            class="text-3xl font-heading font-bold text-primary-600"
-                        >
-                            24/7
-                        </p>
-                        <p class="text-sm text-gray-500 mt-1">Soporte real</p>
+                        <p class="text-4xl font-heading font-black text-primary-600">100%</p>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1 font-medium uppercase tracking-wider">A Medida</p>
                     </div>
                 </div>
             </div>
 
-            <div
-                class="relative mx-auto w-full max-w-lg lg:max-w-none animate-fade-in"
-                style="animation-delay: 300ms;"
-            >
-                <div
-                    class="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-500 will-change-transform"
-                >
-                    <div
-                        class="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-transparent z-10"
-                    >
-                    </div>
+            <!-- Imagen / Elemento Visual Derecha -->
+            <div class="relative mx-auto w-full max-w-lg lg:max-w-none hero-image-container z-10">
+                <!-- Tarjeta Principal Mockup -->
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-100 will-change-transform hero-image" style="opacity: 0; transform: scale(0.95);">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-primary-600/10 to-fuchsia-500/10 mix-blend-overlay z-10"></div>
                     <img
-                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                        alt="Emprendedores felices viendo resultados"
+                        src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200"
+                        alt="Diseño UX UI y Desarrollo Web por SFO Estudio"
                         class="w-full h-[500px] object-cover"
+                        width="1200"
+                        height="500"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="sync"
                     />
+                    
+                    <!-- Overlay de UI moderno tipo Glassmorphism -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent z-10 flex items-end p-8">
+                        <div class="w-full glass-dark rounded-2xl p-4 border-gray-700/50 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-fuchsia-500 flex items-center justify-center shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-white">SFO Estudio Web</p>
+                                <p class="text-xs text-gray-300">Modern Architecture</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div
-                    class="absolute -bottom-6 -left-6 glass rounded-xl p-4 flex items-center gap-4 animate-bounce-slow"
-                >
-                    <div
-                        class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-lg"
-                    >
-                        <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            ></path>
-                        </svg>
+
+                <!-- Tooltip Flotante -->
+                <div class="absolute -top-6 -right-6 glass rounded-2xl p-4 flex items-center gap-3 shadow-xl hero-float" style="opacity: 0; transform: translateX(30px);">
+                    <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-gray-900">
-                            Acta de Conformidad
-                        </p>
-                        <p class="text-xs text-gray-500">
-                            Solo pagas si estás 100% feliz
-                        </p>
+                        <p class="text-sm font-bold text-gray-900">Rápido y Seguro</p>
+                        <p class="text-xs text-gray-500">Optimizado para SEO</p>
                     </div>
                 </div>
             </div>
@@ -157,43 +99,44 @@
     </div>
 </section>
 
-<style>
-    @keyframes fade-in-up {
-        0% {
-            opacity: 0;
-            transform: translateY(20px);
+<!-- GSAP Animation Script -->
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Asegurarse de que gsap existe
+        if (typeof gsap !== "undefined") {
+            // Animación de entrada de textos con .to en lugar de .from por seguridad
+            gsap.to(".hero-stagger", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power3.out",
+                delay: 0.2
+            });
+
+            // Animación de la imagen / tarjeta
+            gsap.to(".hero-image", {
+                scale: 1,
+                opacity: 1,
+                rotationX: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+
+            // Elemento flotante
+            gsap.to(".hero-float", {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "back.out(1.5)",
+                delay: 0.6
+            });
+        } else {
+            // Fallback si GSAP no carga
+            document.querySelectorAll(".hero-stagger, .hero-image, .hero-float").forEach(el => {
+                el.style.opacity = "1";
+                el.style.transform = "none";
+            });
         }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    @keyframes fade-in {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-    @keyframes bounce-slow {
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-    .animate-fade-in-up {
-        animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        opacity: 0;
-    }
-    .animate-fade-in {
-        animation: fade-in 1s ease-out forwards;
-        opacity: 0;
-    }
-    .animate-bounce-slow {
-        animation: bounce-slow 4s infinite ease-in-out;
-    }
-</style>
+    });
+</script>

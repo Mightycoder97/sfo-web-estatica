@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sfo-estudio.com/sitemap-index.xml

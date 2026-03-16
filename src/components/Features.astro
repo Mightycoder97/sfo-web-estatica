@@ -1,66 +1,58 @@
 ---
 const features = [
     {
-        title: "Tranquilidad Total (Legal)",
+        title: "Tranquilidad Total",
         description:
-            "Sabemos que has escuchado historias de terror sobre agencias fantasma. Contrato claro, factura formal y cero sorpresas. Tu inversión está 100% segura.",
+            "Contrato claro, factura formal y cero sorpresas. Tu inversión está 100% segura conmigo como tu desarrollador personal.",
         icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>`,
     },
     {
-        title: "Entrega en Fecha Exacta",
+        title: "Entrega Puntual",
         description:
-            "El tiempo de tu negocio es oro. Cumplimos los plazos de entrega como si fuera nuestro propio negocio. Sin excusas, sin retrasos eternos.",
+            "El tiempo es oro. Cumplo los plazos de entrega a rajatabla. Trabajamos con sprints semanales para que veas el progreso real constante.",
         icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
     },
     {
         title: "Aprobación sin Estrés",
         description:
-            "No pagas el saldo final hasta que veas el proyecto, te encante y firmes el Acta de Conformidad. Queremos que estés genuinamente orgulloso de tu web.",
+            "Revisiones iterativas. No lanzamos hasta que estés 100% orgulloso del resultado y firmes el Acta de Conformidad de Cierre.",
         icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>`,
     },
     {
-        title: "Soporte Real (24/7)",
+        title: "Soporte Local Constante",
         description:
-            "¿Algo falló el fin de semana en plena campaña de ventas? Tranquilo. Nuestro equipo técnico responde y lo soluciona de inmediato. Nunca estarás solo.",
+            "Sin agencias intermediarias ni correos lentos. ¿Un problema un domingo? Me escribes directo a WhatsApp y lo resolvemos en minutos.",
         icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>`,
     },
 ];
 ---
 
-<section id="metodologia" class="py-24 bg-white relative overflow-hidden">
+<section id="beneficios" class="py-24 bg-white relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2
-                class="text-primary-600 font-semibold tracking-wide uppercase text-sm"
-            >
-                Nuestro Compromiso Contigo
+        <div class="text-center max-w-3xl mx-auto mb-16 feature-title-stagger">
+            <h2 class="text-primary-600 font-bold tracking-wider uppercase text-sm mb-3">
+                ¿Por Qué Trabajar Conmigo?
             </h2>
-            <p
-                class="mt-2 text-3xl md:text-4xl leading-8 font-heading font-extrabold tracking-tight text-gray-900"
-            >
-                Olvídate de las <span class="text-gradient"
-                    >malas experiencias</span
-                >.
+            <p class="text-3xl md:text-5xl leading-tight font-heading font-black tracking-tight text-gray-900">
+                Olvídate de las <span class="text-gradient">malas experiencias</span>.
             </p>
-            <p class="mt-4 max-w-2xl text-lg md:text-xl text-gray-500 mx-auto">
-                Trabajar con tecnología debería ser emocionante y dar frutos, no
-                dolores de cabeza. Esta es nuestra garantía inquebrantable para
-                ti, desde el día 1.
+            <p class="mt-6 max-w-2xl text-lg md:text-xl text-gray-500 mx-auto font-light">
+                Trabajar con tecnología debe ser emocionante y dar frutos, no dolores de cabeza. Esta es mi garantía inquebrantable como profesional.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {
                 features.map((feature) => (
-                    <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-primary-100 hover:shadow-xl transition-all duration-300 group">
+                    <div class="feature-card bg-gray-50/50 rounded-3xl p-8 border border-gray-100 hover:border-primary-200 hover:shadow-2xl hover:shadow-primary-600/5 transition-all duration-300 group hover:-translate-y-2">
                         <div
-                            class="w-14 h-14 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center text-primary-600 mb-6 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300"
+                            class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-gray-100 flex items-center justify-center text-primary-600 mb-6 group-hover:bg-gradient-to-br group-hover:from-primary-600 group-hover:to-fuchsia-500 group-hover:text-white transition-all duration-500 transform group-hover:rotate-6"
                             set:html={feature.icon}
                         />
-                        <h3 class="text-xl font-heading font-bold text-gray-900 mb-3">
+                        <h3 class="text-xl font-heading font-bold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">
                             {feature.title}
                         </h3>
-                        <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+                        <p class="text-gray-600 leading-relaxed text-sm">
                             {feature.description}
                         </p>
                     </div>
@@ -69,3 +61,37 @@ const features = [
         </div>
     </div>
 </section>
+
+<!-- GSAP Animation Script -->
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.set(".feature-title-stagger", { y: 30, opacity: 0 });
+            gsap.set(".feature-card", { y: 40, opacity: 0 });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#beneficios",
+                    start: "top 80%",
+                }
+            });
+
+            tl.to(".feature-title-stagger", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+
+            tl.to(".feature-card", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "back.out(1.2)"
+            }, "-=0.4");
+        }
+    });
+</script>

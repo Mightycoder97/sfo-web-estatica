@@ -1,0 +1,92 @@
+---
+---
+
+<section id="nosotros" class="py-16 bg-white border-t border-gray-100 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-5 gap-8 items-center">
+            
+            <!-- Imagen Izquierda -->
+            <div class="lg:col-span-2 relative max-w-[280px] mx-auto w-full about-image" style="opacity: 0; transform: scale(0.95);">
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 translate-x-3 translate-y-3 rounded-3xl -z-10"></div>
+                <img 
+                    src="/img/perfil.jpeg" 
+                    alt="Sebastián Retamozo - Lead Developer de SFO Estudio Web" 
+                    class="rounded-3xl w-full h-[300px] object-cover shadow-md border-4 border-white grayscale hover:grayscale-0 transition-all duration-500"
+                    width="280"
+                    height="300"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+
+            <!-- Texto Derecha -->
+            <div class="lg:col-span-3 text-center lg:text-left">
+                <span class="text-gray-500 font-semibold tracking-wider uppercase text-xs mb-2 block about-stagger" style="opacity: 0; transform: translateY(20px);">
+                    El equipo detrás
+                </span>
+                <h2 class="text-2xl md:text-3xl font-heading font-black text-gray-800 mb-4 leading-tight about-stagger" style="opacity: 0; transform: translateY(20px);">
+                    Sebastián Retamozo <br class="hidden lg:block"/>
+                    <span class="text-primary-600">Fundador</span>.
+                </h2>
+                
+                <div class="space-y-4 text-lg text-gray-600 font-light mb-8">
+                    <p class="about-stagger" style="opacity: 0; transform: translateY(20px);">
+                        Soy el <strong class="font-bold text-gray-900">Ingeniero de Software Principal y Fundador</strong> detrás de SFO Estudio Web. Cuento con una sólida experiencia reciente y fresca diseñando y programando soluciones digitales modernas para empresas.
+                    </p>
+                    <p class="about-stagger" style="opacity: 0; transform: translateY(20px);">
+                        Mi enfoque personal es darte un trato directo, honesto y libre del estrés típico de agencias grandes: te hablo con transparencia, cumplimos plazos al día y no cobramos el saldo final hasta que ames tu proyecto.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4 justify-center lg:justify-start about-stagger" style="opacity: 0; transform: translateY(20px);">
+                    <div class="flex -space-x-3">
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt="Cliente feliz" width="48" height="48" loading="lazy" decoding="async">
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Cliente feliz" width="48" height="48" loading="lazy" decoding="async">
+                        <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Cliente feliz" width="48" height="48" loading="lazy" decoding="async">
+                    </div>
+                    <div class="text-sm">
+                        <p class="font-bold text-gray-900">Proyectos Exitosos</p>
+                        <p class="text-gray-500">Varios clientes satisfechos</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- GSAP Animation Script -->
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#nosotros",
+                    start: "top 80%",
+                }
+            });
+
+            tl.to(".about-image", {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out"
+            });
+
+            tl.to(".about-stagger", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power2.out"
+            }, "-=0.6");
+        } else {
+            document.querySelectorAll(".about-image, .about-stagger").forEach(el => {
+                el.style.opacity = "1";
+                el.style.transform = "none";
+            });
+        }
+    });
+</script>
