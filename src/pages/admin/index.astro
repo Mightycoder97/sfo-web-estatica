@@ -1,0 +1,255 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+
+// This is an Admin Dashboard page.
+// Since it's a static site by default, data is fetched client-side.
+---
+<AdminLayout title="Dashboard">
+	
+	<!-- Top KPIs -->
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+		<!-- KPI Card 1 -->
+		<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm font-medium text-gray-500 mb-1">Total Clientes</p>
+					<h3 class="text-3xl font-bold text-gray-900" id="kpi-customers">--</h3>
+				</div>
+				<div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+				</div>
+			</div>
+			<div class="mt-4 flex items-center text-sm">
+				<span class="text-green-600 font-medium flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+					+12%
+				</span>
+				<span class="text-gray-400 ml-2">vs mes anterior</span>
+			</div>
+		</div>
+
+		<!-- KPI Card 2 -->
+		<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm font-medium text-gray-500 mb-1">Proyectos Activos</p>
+					<h3 class="text-3xl font-bold text-gray-900" id="kpi-projects">--</h3>
+				</div>
+				<div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+				</div>
+			</div>
+			<div class="mt-4 flex items-center text-sm">
+				<span class="text-green-600 font-medium flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+					+4
+				</span>
+				<span class="text-gray-400 ml-2">esta semana</span>
+			</div>
+		</div>
+
+		<!-- KPI Card 3 -->
+		<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm font-medium text-gray-500 mb-1">Ingresos (Mes)</p>
+					<h3 class="text-3xl font-bold text-gray-900" id="kpi-revenue">--</h3>
+				</div>
+				<div class="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+				</div>
+			</div>
+			<div class="mt-4 flex items-center text-sm">
+				<span class="text-red-500 font-medium flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+					-2.5%
+				</span>
+				<span class="text-gray-400 ml-2">vs mes anterior</span>
+			</div>
+		</div>
+
+		<!-- KPI Card 4 -->
+		<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm font-medium text-gray-500 mb-1">Facturas Pendientes</p>
+					<h3 class="text-3xl font-bold text-gray-900" id="kpi-invoices">--</h3>
+				</div>
+				<div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
+				</div>
+			</div>
+			<div class="mt-4 flex items-center text-sm">
+				<a href="/admin/facturas" class="text-primary-600 font-medium hover:underline flex items-center">
+					Ver todas
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Two columns layout for table and extra info -->
+	<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+		
+		<!-- Recent Projects -->
+		<div class="bg-white rounded-xl border border-gray-200 shadow-sm lg:col-span-2 overflow-hidden flex flex-col">
+			<div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
+				<h3 class="text-lg font-semibold text-gray-900">Proyectos Recientes</h3>
+				<a href="/admin/proyectos" class="text-sm text-primary-600 font-medium hover:text-primary-700">Ver todos</a>
+			</div>
+			<div class="overflow-x-auto">
+				<table class="w-full text-left border-collapse">
+					<thead>
+						<tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500">
+							<th class="px-6 py-3 font-medium">Cliente</th>
+							<th class="px-6 py-3 font-medium">Servicio</th>
+							<th class="px-6 py-3 font-medium">Estado</th>
+							<th class="px-6 py-3 font-medium text-right">Fecha Inicio</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-gray-200" id="recent-projects-table">
+						<!-- Skeleton Loader -->
+						<tr class="animate-pulse">
+							<td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-24"></div></td>
+							<td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-32"></div></td>
+							<td class="px-6 py-4"><div class="h-6 bg-gray-200 rounded-full w-20"></div></td>
+							<td class="px-6 py-4 text-right"><div class="h-4 bg-gray-200 rounded w-20 ml-auto"></div></td>
+						</tr>
+						<tr class="animate-pulse">
+							<td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-20"></div></td>
+							<td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-28"></div></td>
+							<td class="px-6 py-4"><div class="h-6 bg-gray-200 rounded-full w-24"></div></td>
+							<td class="px-6 py-4 text-right"><div class="h-4 bg-gray-200 rounded w-20 ml-auto"></div></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Quick Actions / Log -->
+		<div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
+			<div class="px-6 py-5 border-b border-gray-200 bg-gray-50/50">
+				<h3 class="text-lg font-semibold text-gray-900">Acciones Rápidas</h3>
+			</div>
+			<div class="p-6 flex-1 flex flex-col gap-3">
+				<a href="/admin/clientes/nuevo" class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+					<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-200 transition-colors">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+					</div>
+					<div>
+						<p class="font-medium text-gray-900">Nuevo Cliente</p>
+						<p class="text-xs text-gray-500">Registrar un nuevo perfil</p>
+					</div>
+				</a>
+				
+				<a href="/admin/facturas/nueva" class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-colors group">
+					<div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-200 transition-colors">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+					</div>
+					<div>
+						<p class="font-medium text-gray-900">Nueva Factura</p>
+						<p class="text-xs text-gray-500">Generar cobro para cliente</p>
+					</div>
+				</a>
+
+				<a href="/admin/proyectos/nuevo" class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors group">
+					<div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-200 transition-colors">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+					</div>
+					<div>
+						<p class="font-medium text-gray-900">Nuevo Proyecto</p>
+						<p class="text-xs text-gray-500">Iniciar un nuevo servicio</p>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		import { supabase } from '../../lib/supabase';
+
+		const loadDashboardData = async () => {
+			try {
+				// We run these queries in parallel
+				const [
+					{ count: clientsCount }, 
+					{ count: projectsCount },
+					{ count: pendingInvoicesCount },
+					{ data: recentProjects }
+				] = await Promise.all([
+					supabase.from('clientes').select('id_cliente', { count: 'exact', head: true }),
+					supabase.from('cliente_servicio').select('id_proyecto', { count: 'exact', head: true }).neq('estado_progreso', 'Completado'),
+					supabase.from('factura').select('id_factura', { count: 'exact', head: true }).eq('estado', 'pendiente'),
+					supabase.from('cliente_servicio')
+						.select(`
+							id_proyecto,
+							estado_progreso,
+							fecha_inicio,
+							clientes ( nombres, apellidos ),
+							tipo_servicio_catalogo ( nombre )
+						`)
+						.order('fecha_inicio', { ascending: false })
+						.limit(5)
+				]);
+
+				// Update UI KPI Cards
+				document.getElementById('kpi-customers')!.innerText = clientsCount?.toString() || '0';
+				document.getElementById('kpi-projects')!.innerText = projectsCount?.toString() || '0';
+				document.getElementById('kpi-invoices')!.innerText = pendingInvoicesCount?.toString() || '0';
+				
+				// Optional: Revenue query
+				const { data: facturas } = await supabase.from('factura').select('monto_total').eq('estado', 'pagada');
+				const totalRevenue = facturas?.reduce((acc, curr) => acc + Number(curr.monto_total), 0) || 0;
+				document.getElementById('kpi-revenue')!.innerText = `$${totalRevenue.toLocaleString()}`;
+
+				// Render Recent Projects Table
+				const tbody = document.getElementById('recent-projects-table');
+				if (tbody) {
+					if (!recentProjects || recentProjects.length === 0) {
+						tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">No hay proyectos recientes</td></tr>`;
+					} else {
+						tbody.innerHTML = recentProjects.map((p: any) => {
+							const clientName = p.clientes ? `${p.clientes.nombres} ${p.clientes.apellidos}` : 'Cliente Desconocido';
+							const serviceName = p.tipo_servicio_catalogo?.nombre || 'Servicio Personalizado';
+							const date = p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString('es-ES') : '--';
+							
+							// Badge color based on state
+							let badgeColor = 'bg-gray-100 text-gray-800';
+							if (p.estado_progreso.toLowerCase().includes('pendiente')) badgeColor = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+							else if (p.estado_progreso.toLowerCase().includes('progreso')) badgeColor = 'bg-blue-100 text-blue-800 border-blue-200';
+							else if (p.estado_progreso.toLowerCase().includes('completado')) badgeColor = 'bg-green-100 text-green-800 border-green-200';
+
+							return `
+								<tr class="hover:bg-gray-50 transition-colors">
+									<td class="px-6 py-4 whitespace-nowrap">
+										<div class="font-medium text-gray-900">${clientName}</div>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap text-gray-600">
+										${serviceName}
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap">
+										<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeColor}">
+											${p.estado_progreso}
+										</span>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+										${date}
+									</td>
+								</tr>
+							`;
+						}).join('');
+					}
+				}
+
+			} catch (error) {
+				console.error('Error loading dashboard data:', error);
+				// Set fallbacks
+				document.getElementById('kpi-customers')!.innerText = 'E';
+				document.getElementById('recent-projects-table')!.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-red-500">Error cargando datos. Verifique conexión a Supabase.</td></tr>`;
+			}
+		};
+
+		// Run immediately
+		loadDashboardData();
+	</script>
+</AdminLayout>

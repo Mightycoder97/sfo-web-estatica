@@ -1,0 +1,227 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Editar Proyecto - Portafolio SFO">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" id="page-title">
+        Cargando Proyecto...
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Actualiza los detalles del proyecto en el portafolio público.
+      </p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/admin/portafolio" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        Volver
+      </a>
+    </div>
+  </div>
+
+  <div id="error-alert" class="rounded-md bg-red-50 p-4 mb-6 hidden">
+    <h3 class="text-sm font-medium text-red-800">Error al cargar proyecto</h3>
+    <div class="mt-2 text-sm text-red-700" id="error-alert-text"><p></p></div>
+  </div>
+
+  <div id="loading-spinner" class="py-12 flex justify-center">
+    <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  </div>
+
+  <div id="form-container" class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2 hidden">
+    <form id="portfolio-edit-form" class="px-4 py-6 sm:p-8">
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          
+          <div class="sm:col-span-4">
+            <label for="titulo" class="block text-sm font-medium leading-6 text-gray-900">Nombre del Proyecto <span class="text-red-500">*</span></label>
+            <div class="mt-2">
+              <input type="text" name="titulo" id="titulo" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3">
+            </div>
+          </div>
+
+          <div class="sm:col-span-full">
+            <label for="thumbnail" class="block text-sm font-medium leading-6 text-gray-900">URL de la Imagen (Thumbnail) <span class="text-red-500">*</span></label>
+            <div class="mt-2 text-sm text-gray-500 mb-2">Recomendamos usar imágenes de 800x600 o superiores.</div>
+            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+              <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">URL: </span>
+              <input type="text" name="thumbnail" id="thumbnail" required class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 px-3">
+            </div>
+            <!-- Preview Image -->
+            <div class="mt-4" id="thumbnail-preview-container">
+              <p class="text-xs text-gray-500 mb-1">Vista Previa:</p>
+              <div class="h-32 w-48 bg-gray-100 rounded border border-gray-200 overflow-hidden relative">
+                <img id="thumbnail-preview" src="" class="w-full h-full object-cover">
+              </div>
+            </div>
+          </div>
+
+          <div class="sm:col-span-full">
+            <label for="url" class="block text-sm font-medium leading-6 text-gray-900">Enlace del Proyecto (Link en vivo) <span class="text-red-500">*</span></label>
+            <div class="mt-2">
+              <input type="url" name="url" id="url" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3">
+            </div>
+          </div>
+
+          <div class="sm:col-span-full">
+            <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Etiquetas (Separadas por comas)</label>
+            <div class="mt-2">
+              <input type="text" name="tags" id="tags" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3" placeholder="E-commerce, Diseño Web, Next.js">
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="orden" class="block text-sm font-medium leading-6 text-gray-900">Orden de aparición</label>
+            <div class="mt-2">
+              <input type="number" name="orden" id="orden" value="0" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3">
+            </div>
+            <p class="mt-2 text-xs text-gray-500">Menor número, aparece primero.</p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center justify-end gap-x-6 border-t border-gray-900/10 pt-6">
+          <button type="submit" id="submit-btn" class="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Actualizar Cambios
+          </button>
+        </div>
+
+        <div id="error-msg" class="mt-4 p-4 text-sm text-red-700 bg-red-50 rounded-lg hidden"></div>
+        <div id="success-msg" class="mt-4 p-4 text-sm text-green-700 bg-green-50 rounded-lg hidden"></div>
+      </form>
+    </div>
+
+  <script>
+    import { supabase } from '../../../../lib/supabase';
+
+    const renderData = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryId = urlParams.get('id');
+
+      const titleEl = document.getElementById('page-title');
+      const errorAlert = document.getElementById('error-alert');
+      const errorAlertTxt = document.getElementById('error-alert-text');
+      const spinnerEl = document.getElementById('loading-spinner');
+      const formContainer = document.getElementById('form-container');
+      const form = document.getElementById('portfolio-edit-form') as HTMLFormElement;
+
+      // Ensure form matches inputs
+      const inputTitulo = document.getElementById('titulo') as HTMLInputElement;
+      const inputThumbnail = document.getElementById('thumbnail') as HTMLInputElement;
+      const inputUrl = document.getElementById('url') as HTMLInputElement;
+      const inputTags = document.getElementById('tags') as HTMLInputElement;
+      const inputOrden = document.getElementById('orden') as HTMLInputElement;
+      const imgPreview = document.getElementById('thumbnail-preview') as HTMLImageElement;
+      
+      try {
+        if (!queryId) throw new Error("ID no propocionado en la URL.");
+
+        form.dataset.id = queryId;
+
+        const { data, error } = await supabase
+          .from('portafolio')
+          .select('*')
+          .eq('id_portafolio', queryId)
+          .single();
+
+        if (error) throw error;
+        
+        if (titleEl) titleEl.textContent = `Editar: ${data.titulo}`;
+        if (inputTitulo) inputTitulo.value = data.titulo;
+        if (inputThumbnail) inputThumbnail.value = data.thumbnail;
+        if (inputUrl) inputUrl.value = data.url;
+        if (inputTags) inputTags.value = data.tags || '';
+        if (inputOrden) inputOrden.value = data.orden || 0;
+        if (imgPreview) imgPreview.src = data.thumbnail;
+
+        spinnerEl?.classList.add('hidden');
+        formContainer?.classList.remove('hidden');
+
+      } catch (err: any) {
+        spinnerEl?.classList.add('hidden');
+        errorAlert?.classList.remove('hidden');
+        if (errorAlertTxt) errorAlertTxt.textContent = err.message;
+        if (titleEl) titleEl.textContent = "Error de Proyecto";
+      }
+    };
+
+    renderData();
+
+    // Now standard form handler
+    const form = document.getElementById('portfolio-edit-form') as HTMLFormElement;
+    const errorDiv = document.getElementById('error-msg');
+    const successDiv = document.getElementById('success-msg');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const imgInput = document.getElementById('thumbnail') as HTMLInputElement;
+    const imgPreview = document.getElementById('thumbnail-preview') as HTMLImageElement;
+    const imgPreviewContainer = document.getElementById('thumbnail-preview-container');
+
+    // Live preview updates
+    imgInput?.addEventListener('input', (e) => {
+        const url = (e.target as HTMLInputElement).value;
+        if(url && url.length > 3) {
+            imgPreview.src = url;
+            imgPreviewContainer?.classList.remove('hidden');
+        } else {
+            imgPreviewContainer?.classList.add('hidden');
+        }
+    });
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const projectId = form.dataset.id;
+        
+        if (!projectId) return;
+
+        if (errorDiv) errorDiv.classList.add('hidden');
+        if (successDiv) successDiv.classList.add('hidden');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Actualizando...';
+        }
+
+        const formData = new FormData(form);
+        const data = {
+          titulo: formData.get('titulo'),
+          thumbnail: formData.get('thumbnail'),
+          url: formData.get('url'),
+          tags: formData.get('tags'),
+          orden: formData.get('orden') ? parseInt(formData.get('orden') as string) : 0,
+          updated_at: new Date().toISOString()
+        };
+
+        try {
+          const { error } = await supabase
+            .from('portafolio')
+            .update(data)
+            .eq('id_portafolio', projectId);
+
+          if (error) throw error;
+
+          if (successDiv) {
+            successDiv.textContent = '¡Proyecto actualizado correctamente!';
+            successDiv.classList.remove('hidden');
+          }
+          
+          setTimeout(() => {
+            window.location.href = '/admin/portafolio';
+          }, 1500);
+
+        } catch (error: any) {
+          console.error('Error actualizando en supabase:', error);
+          if (errorDiv) {
+            errorDiv.textContent = `Error: ${error.message}`;
+            errorDiv.classList.remove('hidden');
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Actualizar Cambios';
+          }
+        }
+      });
+    }
+  </script>
+</AdminLayout>

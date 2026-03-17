@@ -1,0 +1,183 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+---
+<AdminLayout title="Nuevo Proyecto">
+	
+	<div class="mb-6 flex items-center justify-between">
+		<a href="/admin/proyectos" class="text-sm font-medium text-gray-500 hover:text-gray-900 flex items-center gap-2 transition-colors">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+			Volver a Proyectos
+		</a>
+	</div>
+
+	<div class="bg-white rounded-xl border border-gray-200 shadow-sm max-w-3xl">
+		<div class="px-6 py-5 border-b border-gray-200 bg-gray-50/50 rounded-t-xl">
+			<h2 class="text-lg font-semibold text-gray-900">Iniciar Nuevo Proyecto</h2>
+			<p class="text-sm text-gray-500 mt-1">Vincula un cliente con un servicio del catálogo para iniciar el desarrollo del proyecto.</p>
+		</div>
+		
+		<form id="nuevo-proyecto-form" class="p-6">
+			<div id="form-alert" class="hidden mb-6 p-4 rounded-lg text-sm" role="alert"></div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+				<!-- Cliente (Select) -->
+				<div>
+					<label for="id_cliente" class="block mb-2 text-sm font-medium text-gray-900">Cliente Asociado <span class="text-red-500">*</span></label>
+					<select id="id_cliente" name="id_cliente" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
+						<option value="" disabled selected>Cargando clientes...</option>
+					</select>
+				</div>
+				
+				<!-- Servicio (Select) -->
+				<div>
+					<label for="id_servicio" class="block mb-2 text-sm font-medium text-gray-900">Servicio a Realizar <span class="text-red-500">*</span></label>
+					<select id="id_servicio" name="id_servicio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
+						<option value="" disabled selected>Cargando servicios...</option>
+					</select>
+				</div>
+
+				<!-- Estado Inicial -->
+				<div class="md:col-span-2">
+					<label for="estado_progreso" class="block mb-2 text-sm font-medium text-gray-900">Estado Inicial <span class="text-red-500">*</span></label>
+					<select id="estado_progreso" name="estado_progreso" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
+						<option value="1. Pendiente" selected>1. Pendiente - Esperando pago o inicio</option>
+						<option value="2. En Progreso">2. En Progreso - Proyecto activo</option>
+						<option value="3. Completado">3. Completado - Finalizado</option>
+					</select>
+				</div>
+
+				<!-- Fechas -->
+				<div>
+					<label for="fecha_inicio" class="block mb-2 text-sm font-medium text-gray-900">Fecha de Inicio Estimada</label>
+					<input type="date" id="fecha_inicio" name="fecha_inicio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transform">
+				</div>
+				<div>
+					<label for="fecha_fin_estimada" class="block mb-2 text-sm font-medium text-gray-900">Fecha de Entrega Estimada</label>
+					<input type="date" id="fecha_fin_estimada" name="fecha_fin_estimada" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+				</div>
+
+				<!-- Observaciones -->
+				<div class="md:col-span-2">
+					<label for="observaciones" class="block mb-2 text-sm font-medium text-gray-900">Notas / Observaciones del Proyecto</label>
+					<textarea id="observaciones" name="observaciones" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Detalles de los requerimientos, alcance inicial, requerimientos especiales del cliente, etc..."></textarea>
+				</div>
+			</div>
+
+			<div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+				<a href="/admin/proyectos" class="text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors">
+					Cancelar
+				</a>
+				<button type="submit" id="submit-btn" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors flex items-center gap-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin" id="submit-spinner"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+					Registrar Proyecto
+				</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		import { supabase } from '../../../lib/supabase';
+
+		const form = document.getElementById('nuevo-proyecto-form') as HTMLFormElement;
+		const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+		const submitSpinner = document.getElementById('submit-spinner');
+		const alertBox = document.getElementById('form-alert');
+		
+		const clienteSelect = document.getElementById('id_cliente') as HTMLSelectElement;
+		const servicioSelect = document.getElementById('id_servicio') as HTMLSelectElement;
+
+		// Set today as default start date
+		const todayInput = document.getElementById('fecha_inicio') as HTMLInputElement;
+		if (todayInput) {
+			todayInput.valueAsDate = new Date();
+		}
+
+		const showAlert = (message: string, isError = false) => {
+			if (!alertBox) return;
+			alertBox.textContent = message;
+			alertBox.classList.remove('hidden', 'bg-red-50', 'text-red-800', 'bg-green-50', 'text-green-800');
+			
+			if (isError) {
+				alertBox.classList.add('bg-red-50', 'text-red-800');
+			} else {
+				alertBox.classList.add('bg-green-50', 'text-green-800');
+			}
+		};
+
+		// Fetch relation data for selects (Clientes and Servicios in parallel)
+		const loadRelations = async () => {
+			try {
+				const [resClientes, resServicios] = await Promise.all([
+					supabase.from('clientes').select('id_cliente, nombres, apellidos').order('nombres'),
+					supabase.from('tipo_servicio_catalogo').select('id_servicio, nombre, precio_base').order('nombre')
+				]);
+				
+				if (resClientes.error) throw resClientes.error;
+				if (resServicios.error) throw resServicios.error;
+				
+				if (clienteSelect) {
+					clienteSelect.innerHTML = `<option value="" disabled selected>Selecciona un cliente</option>` + 
+					(resClientes.data || []).map(c => `<option value="${c.id_cliente}">${c.nombres} ${c.apellidos}</option>`).join('');
+				}
+
+				if (servicioSelect) {
+					servicioSelect.innerHTML = `<option value="" disabled selected>Selecciona un servicio</option>` + 
+					(resServicios.data || []).map(s => `<option value="${s.id_servicio}">${s.nombre} ($${s.precio_base})</option>`).join('');
+				}
+			} catch (error) {
+				console.error('Error fetching relations:', error);
+				if (clienteSelect) clienteSelect.innerHTML = `<option value="" disabled>Error al cargar</option>`;
+				if (servicioSelect) servicioSelect.innerHTML = `<option value="" disabled>Error al cargar</option>`;
+			}
+		};
+		loadRelations();
+
+		form?.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			
+			// Loading state
+			submitBtn.disabled = true;
+			submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+			submitSpinner?.classList.remove('hidden');
+			alertBox?.classList.add('hidden');
+
+			const formData = new FormData(form);
+			
+			const dataForm = {
+				id_cliente: formData.get('id_cliente'),
+				id_servicio: formData.get('id_servicio'),
+				estado_progreso: formData.get('estado_progreso'),
+				fecha_inicio: formData.get('fecha_inicio') || new Date().toISOString(),
+				fecha_fin_estimada: formData.get('fecha_fin_estimada') || null,
+				observaciones: formData.get('observaciones') || null,
+			};
+
+			try {
+				const { data, error } = await supabase
+					.from('cliente_servicio') // 'proyectos' equivalent
+					.insert([dataForm])
+					.select();
+
+				if (error) throw error;
+
+				// Success
+				showAlert('Proyecto registrado exitosamente. Redirigiendo...', false);
+				form.reset();
+				
+				// Redirect after brief delay
+				setTimeout(() => {
+					window.location.href = '/admin/proyectos';
+				}, 1500);
+
+			} catch (error: any) {
+				console.error('Error insertando proyecto:', error);
+				showAlert(error.message || 'Ocurrió un error al guardar el proyecto.', true);
+			} finally {
+				// Reset loading state if not successfully redirected
+				submitBtn.disabled = false;
+				submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+				submitSpinner?.classList.add('hidden');
+			}
+		});
+	</script>
+</AdminLayout>

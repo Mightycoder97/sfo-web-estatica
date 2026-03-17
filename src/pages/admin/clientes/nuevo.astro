@@ -1,0 +1,151 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+---
+<AdminLayout title="Nuevo Cliente">
+	
+	<div class="mb-6 flex items-center justify-between">
+		<a href="/admin/clientes" class="text-sm font-medium text-gray-500 hover:text-gray-900 flex items-center gap-2 transition-colors">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+			Volver a Clientes
+		</a>
+	</div>
+
+	<div class="bg-white rounded-xl border border-gray-200 shadow-sm max-w-3xl">
+		<div class="px-6 py-5 border-b border-gray-200 bg-gray-50/50 rounded-t-xl">
+			<h2 class="text-lg font-semibold text-gray-900">Datos del Cliente</h2>
+			<p class="text-sm text-gray-500 mt-1">Ingresa la información personal o de contacto del nuevo cliente.</p>
+		</div>
+		
+		<form id="nuevo-cliente-form" class="p-6">
+			<div id="form-alert" class="hidden mb-6 p-4 rounded-lg text-sm" role="alert"></div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+				<!-- Nombres -->
+				<div>
+					<label for="nombres" class="block mb-2 text-sm font-medium text-gray-900">Nombres <span class="text-red-500">*</span></label>
+					<input type="text" id="nombres" name="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="Ej. Juan Carlos" required>
+				</div>
+				<!-- Apellidos -->
+				<div>
+					<label for="apellidos" class="block mb-2 text-sm font-medium text-gray-900">Apellidos <span class="text-red-500">*</span></label>
+					<input type="text" id="apellidos" name="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="Ej. Pérez Gómez" required>
+				</div>
+
+				<!-- Tipo de Documento -->
+				<div>
+					<label for="tipo_documento" class="block mb-2 text-sm font-medium text-gray-900">Tipo de Documento <span class="text-red-500">*</span></label>
+					<select id="tipo_documento" name="tipo_documento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" required>
+						<option value="" disabled selected>Selecciona un tipo</option>
+						<option value="DNI">DNI</option>
+						<option value="Pasaporte">Pasaporte</option>
+						<option value="Carnet de Extranjería">Carnet de Extranjería</option>
+						<option value="RUC">RUC (Persona con Negocio)</option>
+						<option value="Otro">Otro</option>
+					</select>
+				</div>
+				<!-- Número de Documento -->
+				<div>
+					<label for="numero_documento" class="block mb-2 text-sm font-medium text-gray-900">Número de Documento <span class="text-red-500">*</span></label>
+					<input type="text" id="numero_documento" name="numero_documento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="Ej. 12345678" required>
+					<p class="mt-1 text-xs text-gray-500">Debe ser único en el sistema.</p>
+				</div>
+
+				<!-- Email -->
+				<div>
+					<label for="email" class="block mb-2 text-sm font-medium text-gray-900">Correo Electrónico</label>
+					<input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="ejemplo@correo.com">
+				</div>
+				<!-- Teléfono -->
+				<div>
+					<label for="telefono" class="block mb-2 text-sm font-medium text-gray-900">Teléfono / Celular</label>
+					<input type="tel" id="telefono" name="telefono" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="+12 345 678 900">
+				</div>
+			</div>
+
+			<div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+				<a href="/admin/clientes" class="text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors">
+					Cancelar
+				</a>
+				<button type="submit" id="submit-btn" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors flex items-center gap-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin" id="submit-spinner"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+					Guardar Cliente
+				</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		import { supabase } from '../../../lib/supabase';
+
+		const form = document.getElementById('nuevo-cliente-form') as HTMLFormElement;
+		const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+		const submitSpinner = document.getElementById('submit-spinner');
+		const alertBox = document.getElementById('form-alert');
+
+		const showAlert = (message: string, isError = false) => {
+			if (!alertBox) return;
+			alertBox.textContent = message;
+			alertBox.classList.remove('hidden', 'bg-red-50', 'text-red-800', 'bg-green-50', 'text-green-800');
+			
+			if (isError) {
+				alertBox.classList.add('bg-red-50', 'text-red-800');
+			} else {
+				alertBox.classList.add('bg-green-50', 'text-green-800');
+			}
+		};
+
+		form?.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			
+			// Loading state
+			submitBtn.disabled = true;
+			submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+			submitSpinner?.classList.remove('hidden');
+			alertBox?.classList.add('hidden');
+
+			const formData = new FormData(form);
+			
+			const dataForm = {
+				nombres: formData.get('nombres'),
+				apellidos: formData.get('apellidos'),
+				tipo_documento: formData.get('tipo_documento'),
+				numero_documento: formData.get('numero_documento'),
+				email: formData.get('email') || null,
+				telefono: formData.get('telefono') || null,
+			};
+
+			try {
+				const { data, error } = await supabase
+					.from('clientes')
+					.insert([dataForm])
+					.select();
+
+				if (error) {
+					// Handle duplicate document error
+					if (error.code === '23505') {
+						throw new Error('Ya existe un cliente con ese número de documento.');
+					}
+					throw error;
+				}
+
+				// Success
+				showAlert('Cliente creado exitosamente. Redirigiendo...', false);
+				form.reset();
+				
+				// Redirect after brief delay
+				setTimeout(() => {
+					window.location.href = '/admin/clientes';
+				}, 1500);
+
+			} catch (error: any) {
+				console.error('Error insertando cliente:', error);
+				showAlert(error.message || 'Ocurrió un error al guardar el cliente.', true);
+			} finally {
+				// Reset loading state if not successfully redirected
+				submitBtn.disabled = false;
+				submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+				submitSpinner?.classList.add('hidden');
+			}
+		});
+	</script>
+</AdminLayout>

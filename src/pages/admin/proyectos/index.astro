@@ -1,0 +1,189 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+---
+<AdminLayout title="Proyectos">
+	
+	<div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+		<div class="relative w-full sm:w-96">
+			<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+			</div>
+			<input type="text" id="search-input" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por cliente o servicio...">
+		</div>
+		<div class="flex gap-3 w-full sm:w-auto">
+			<select class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 shadow-sm">
+				<option value="">Todos los Estados</option>
+				<option value="Pendiente">Pendiente</option>
+				<option value="En Progreso">En Progreso</option>
+				<option value="Completado">Completado</option>
+			</select>
+			<a href="/admin/proyectos/nuevo" class="flex-1 sm:flex-none flex items-center justify-center gap-2 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+				Nuevo Proyecto
+			</a>
+		</div>
+	</div>
+
+	<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+		<div class="overflow-x-auto">
+			<table class="w-full text-left border-collapse">
+				<thead>
+					<tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500">
+						<th class="px-6 py-4 font-medium">Proyecto / Servicio</th>
+						<th class="px-6 py-4 font-medium">Cliente</th>
+						<th class="px-6 py-4 font-medium">Estado</th>
+						<th class="px-6 py-4 font-medium">Fechas</th>
+						<th class="px-6 py-4 font-medium text-right">Acciones</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-200" id="proyectos-table">
+					<!-- Skeleton Loader -->
+					<tr class="animate-pulse">
+						<td class="px-6 py-4">
+							<div class="flex flex-col gap-2">
+								<div class="h-4 bg-gray-200 rounded w-32"></div>
+								<div class="h-3 bg-gray-200 rounded w-20"></div>
+							</div>
+						</td>
+						<td class="px-6 py-4">
+							<div class="flex items-center gap-2">
+								<div class="w-6 h-6 bg-gray-200 rounded-full"></div>
+								<div class="h-4 bg-gray-200 rounded w-28"></div>
+							</div>
+						</td>
+						<td class="px-6 py-4"><div class="h-6 bg-gray-200 rounded-full w-24"></div></td>
+						<td class="px-6 py-4">
+							<div class="flex flex-col gap-2">
+								<div class="h-3 bg-gray-200 rounded w-24"></div>
+								<div class="h-3 bg-gray-200 rounded w-24"></div>
+							</div>
+						</td>
+						<td class="px-6 py-4 text-right"><div class="h-8 w-8 bg-gray-200 rounded ml-auto"></div></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<!-- Pagination Footer -->
+		<div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+			<span class="text-sm text-gray-500" id="table-info">Cargando...</span>
+			<div class="flex gap-2">
+				<button disabled class="px-3 py-1 bg-white border border-gray-300 text-gray-500 rounded text-sm disabled:opacity-50">Anterior</button>
+				<button disabled class="px-3 py-1 bg-white border border-gray-300 text-gray-500 rounded text-sm disabled:opacity-50">Siguiente</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		import { supabase } from '../../../lib/supabase';
+
+		const loadProyectos = async () => {
+			try {
+				const { data: proyectos, error, count } = await supabase
+					.from('cliente_servicio')
+					.select(`
+						*,
+						clientes (nombres, apellidos, empresa:empresas(razon_social)),
+						tipo_servicio_catalogo (nombre)
+					`, { count: 'exact' })
+					.order('fecha_inicio', { ascending: false });
+
+				if (error) throw error;
+
+				const tbody = document.getElementById('proyectos-table');
+				const info = document.getElementById('table-info');
+
+				if (tbody) {
+					if (!proyectos || proyectos.length === 0) {
+						tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-gray-500">
+							<div class="flex flex-col items-center justify-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mb-4"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+								<p>No hay proyectos registrados.</p>
+							</div>
+						</td></tr>`;
+					} else {
+						tbody.innerHTML = proyectos.map((p: any) => {
+							const clientName = p.clientes ? `${p.clientes.nombres} ${p.clientes.apellidos}` : 'Desconocido';
+							const companyName = p.clientes?.empresa?.[0]?.razon_social || 'Particular';
+							const serviceName = p.tipo_servicio_catalogo?.nombre || 'Servicio Personalizado';
+							const dateStart = p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString('es-ES') : '--';
+							const dateEnd = p.fecha_fin_estimada ? new Date(p.fecha_fin_estimada).toLocaleDateString('es-ES') : '--';
+							
+							// Badge color based on state
+							let badgeColor = 'bg-gray-100 text-gray-800';
+							if (p.estado_progreso?.toLowerCase().includes('pendiente') || p.estado_progreso === '1. Pendiente') badgeColor = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+							else if (p.estado_progreso?.toLowerCase().includes('progreso') || p.estado_progreso === '2. En Progreso') badgeColor = 'bg-blue-100 text-blue-800 border-blue-200';
+							else if (p.estado_progreso?.toLowerCase().includes('completado') || p.estado_progreso === '3. Completado') badgeColor = 'bg-green-100 text-green-800 border-green-200';
+
+							return `
+								<tr class="hover:bg-gray-50 transition-colors group">
+									<td class="px-6 py-4 whitespace-nowrap">
+										<div class="font-medium text-gray-900">${serviceName}</div>
+										<div class="text-xs text-gray-500 truncate w-48" title="${p.observaciones || ''}">${p.observaciones || 'Sin observaciones'}</div>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap">
+										<div class="flex items-center gap-2">
+											<div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-[10px] uppercase">
+												${clientName.charAt(0)}
+											</div>
+											<div>
+												<div class="font-medium text-gray-900 text-sm">${clientName}</div>
+												<div class="text-xs text-gray-500">${companyName}</div>
+											</div>
+										</div>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap">
+										<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeColor}">
+											${p.estado_progreso}
+										</span>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap">
+										<div class="flex flex-col gap-1">
+											<div class="flex items-center gap-1.5 text-xs text-gray-600">
+												<span class="font-medium w-9">Inicio:</span> <span>${dateStart}</span>
+											</div>
+											<div class="flex items-center gap-1.5 text-xs text-gray-600">
+												<span class="font-medium w-9">Fin:</span> <span>${dateEnd}</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+										<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+											<a href="/admin/contratos/generar?id=${p.id_proyecto}" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Generar Contrato PDF">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+											</a>
+											<!-- TODO: Factura View -->
+											<button type="button" class="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Generar Factura" onclick="alert('Generación de factura próximamente')">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17V7"/></svg>
+											</button>
+											<button type="button" class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Editar Proyecto" onclick="alert('Editar proyecto próximamente')">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+											</button>
+											<button type="button" class="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title="Eliminar Proyecto" onclick="if(confirm('¿Estás seguro de eliminar este proyecto?')) alert('Eliminar proyecto próximamente')">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+											</button>
+										</div>
+									</td>
+								</tr>
+							`;
+						}).join('');
+					}
+				}
+
+				if (info) {
+					info.innerText = `Mostrando ${proyectos?.length || 0} de ${count || 0} proyectos`;
+				}
+
+			} catch (error) {
+				console.error('Error loading proyectos:', error);
+				const tbody = document.getElementById('proyectos-table');
+				if (tbody) {
+					tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500">Error cargando datos. Verifique conexión a Supabase.</td></tr>`;
+				}
+			}
+		};
+
+		// Run
+		loadProyectos();
+	</script>
+</AdminLayout>

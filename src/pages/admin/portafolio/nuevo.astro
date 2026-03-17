@@ -1,0 +1,166 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Nuevo Proyecto - Portafolio SFO">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Añadir al Portafolio
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Ingresa los detalles del proyecto para agregarlo al portafolio público de tu sitio web principal.
+      </p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/admin/portafolio" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        Cancelar
+      </a>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+    <form id="portfolio-form" class="px-4 py-6 sm:p-8">
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        
+        <div class="sm:col-span-4">
+          <label for="titulo" class="block text-sm font-medium leading-6 text-gray-900">Nombre del Proyecto <span class="text-red-500">*</span></label>
+          <div class="mt-2">
+            <input type="text" name="titulo" id="titulo" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3" placeholder="Ej: La Bohemia | Restaurante">
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="thumbnail" class="block text-sm font-medium leading-6 text-gray-900">URL de la Imagen (Thumbnail) <span class="text-red-500">*</span></label>
+          <div class="mt-2 text-sm text-gray-500 mb-2">Recomendamos usar imágenes de 800x600 o superiores. Puedes agregar la URL de una imagen subida o usar las locales como <code>/img/portafolio/restaurante.png</code>.</div>
+          <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+            <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">URL: </span>
+            <input type="text" name="thumbnail" id="thumbnail" required class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 px-3" placeholder="/img/portafolio/nueva_imagen.png">
+          </div>
+          <!-- Preview Image -->
+          <div class="mt-4 hidden" id="thumbnail-preview-container">
+            <p class="text-xs text-gray-500 mb-1">Vista Previa:</p>
+            <div class="h-32 w-48 bg-gray-100 rounded border border-gray-200 overflow-hidden relative">
+              <img id="thumbnail-preview" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="url" class="block text-sm font-medium leading-6 text-gray-900">Enlace del Proyecto (Link en vivo) <span class="text-red-500">*</span></label>
+          <div class="mt-2">
+            <input type="url" name="url" id="url" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3" placeholder="https://mi-cliente.com">
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Etiquetas (Separadas por comas)</label>
+          <div class="mt-2">
+            <input type="text" name="tags" id="tags" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3" placeholder="E-commerce, Diseño Web, Next.js">
+          </div>
+          <p class="mt-2 text-sm text-gray-500">Ejemplo: E-commerce, Fotografía, Gastronomía</p>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="orden" class="block text-sm font-medium leading-6 text-gray-900">Orden de aparición</label>
+          <div class="mt-2">
+            <input type="number" name="orden" id="orden" value="0" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3">
+          </div>
+          <p class="mt-2 text-xs text-gray-500">Menor número, aparece primero.</p>
+        </div>
+      </div>
+
+      <div class="mt-8 flex items-center justify-end gap-x-6 border-t border-gray-900/10 pt-6">
+        <button type="button" class="text-sm font-semibold leading-6 text-gray-900" onclick="window.location.href='/admin/portafolio'">Cancelar</button>
+        <button type="submit" id="submit-btn" class="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          Guardar Proyecto
+        </button>
+      </div>
+
+      <div id="error-msg" class="mt-4 p-4 text-sm text-red-700 bg-red-50 rounded-lg hidden"></div>
+      <div id="success-msg" class="mt-4 p-4 text-sm text-green-700 bg-green-50 rounded-lg hidden"></div>
+    </form>
+  </div>
+
+  <script>
+    import { supabase } from '../../../lib/supabase';
+
+    const form = document.getElementById('portfolio-form') as HTMLFormElement;
+    const errorDiv = document.getElementById('error-msg');
+    const successDiv = document.getElementById('success-msg');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const imgInput = document.getElementById('thumbnail') as HTMLInputElement;
+    const imgPreview = document.getElementById('thumbnail-preview') as HTMLImageElement;
+    const imgPreviewContainer = document.getElementById('thumbnail-preview-container');
+
+    // Live image preview
+    imgInput?.addEventListener('input', (e) => {
+        const url = (e.target as HTMLInputElement).value;
+        if(url && url.length > 3) {
+            imgPreview.src = url;
+            imgPreviewContainer?.classList.remove('hidden');
+        } else {
+            imgPreviewContainer?.classList.add('hidden');
+        }
+    });
+    
+    // Add default image load error handler just in case preview fails
+    imgPreview?.addEventListener('error', () => {
+        console.log('Image failed to load in preview, likely invalid URL');
+    });
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (errorDiv) errorDiv.classList.add('hidden');
+        if (successDiv) successDiv.classList.add('hidden');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Guardando...';
+        }
+
+        const formData = new FormData(form);
+        const data = {
+          titulo: formData.get('titulo'),
+          thumbnail: formData.get('thumbnail'),
+          url: formData.get('url'),
+          tags: formData.get('tags'),
+          orden: formData.get('orden') ? parseInt(formData.get('orden') as string) : 0
+        };
+
+        try {
+          const { error } = await supabase
+            .from('portafolio')
+            .insert([data]);
+
+          if (error) throw error;
+
+          if (successDiv) {
+            successDiv.textContent = '¡Proyecto agregado al portafolio exitosamente!';
+            successDiv.classList.remove('hidden');
+          }
+          
+          form.reset();
+          if(imgPreviewContainer) imgPreviewContainer.classList.add('hidden');
+          
+          setTimeout(() => {
+            window.location.href = '/admin/portafolio';
+          }, 1500);
+
+        } catch (error: any) {
+          console.error('Error insertando en supabase:', error);
+          if (errorDiv) {
+            errorDiv.textContent = `Error: ${error.message}`;
+            errorDiv.classList.remove('hidden');
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Guardar Proyecto';
+          }
+        }
+      });
+    }
+  </script>
+</AdminLayout>

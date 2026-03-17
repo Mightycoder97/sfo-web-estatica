@@ -1,0 +1,178 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+	{ name: "Dashboard", href: "/admin", icon: "home" },
+	{ name: "Clientes", href: "/admin/clientes", icon: "users" },
+	{ name: "Empresas", href: "/admin/empresas", icon: "building" },
+	{ name: "Proyectos", href: "/admin/proyectos", icon: "briefcase" },
+	{ name: "Facturas", href: "/admin/facturas", icon: "file-text" },
+	{ name: "Servicios", href: "/admin/servicios", icon: "layers" },
+	{ name: "Portafolio Público", href: "/admin/portafolio", icon: "monitor" },
+];
+
+const getIcon = (name: string) => {
+	switch(name) {
+		case 'home':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>`;
+		case 'users':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+		case 'building':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building-2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>`;
+		case 'briefcase':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`;
+		case 'file-text':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt-text"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>`;
+		case 'layers':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>`;
+		case 'monitor':
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`;
+		default:
+		return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`;
+	}
+};
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>{title} | Admin SFO</title>
+	<!-- Google Fonts: Inter -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans tracking-tight antialiased">
+	
+	<!-- Topbar Mobile -->
+	<div class="md:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4 sticky top-0 z-20">
+		<div class="font-bold text-xl text-primary-600">SFO Admin</div>
+		<button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-700">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+		</button>
+	</div>
+
+	<div class="flex h-screen overflow-hidden">
+		<!-- Sidebar -->
+		<aside id="sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 h-full fixed inset-y-0 left-0 z-30 transition-transform transform -translate-x-full md:translate-x-0 md:relative md:flex-shrink-0">
+			<div class="p-6 border-b border-gray-200 flex justify-between items-center bg-white md:bg-transparent sticky top-0 md:static z-10 w-full h-16 md:h-auto">
+				<h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-blue-600">SFO Admin</h2>
+				<button id="close-sidebar" class="md:hidden text-gray-500">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+				</button>
+			</div>
+			
+			<nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+				{navItems.map((item) => {
+					const isActive = item.href === '/admin' ? currentPath === '/admin' || currentPath === '/admin/' : currentPath.startsWith(item.href);
+					return (
+						<a 
+							href={item.href}
+							class={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${
+								isActive 
+									? "bg-primary-50 text-primary-700" 
+									: "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+							}`}
+						>
+							<span set:html={getIcon(item.icon)} class={isActive ? "text-primary-600" : "text-gray-400"} />
+							{item.name}
+						</a>
+					)
+				})}
+			</nav>
+
+			<div class="p-4 border-t border-gray-200 bg-white">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+						SR
+					</div>
+					<div class="flex-1 min-w-0">
+						<p class="text-sm font-medium text-gray-900 truncate">Admin</p>
+						<p class="text-xs text-gray-500 truncate">admin@sfoestudioweb.com</p>
+					</div>
+				</div>
+				<a href="/" class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors px-2 py-1.5 rounded-md hover:bg-gray-100">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+					Volver a la web
+				</a>
+			</div>
+		</aside>
+
+		<!-- Mobile Sidebar Overlay -->
+		<div id="sidebar-overlay" class="hidden fixed inset-0 bg-gray-900/50 z-20 md:hidden"></div>
+
+		<!-- Main Content -->
+		<div class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50 relative">
+			<!-- Top Navbar (Desktop) -->
+			<header class="hidden md:flex flex-shrink-0 h-16 bg-white border-b border-gray-200 items-center justify-between px-6 z-10 sticky top-0">
+				<div class="flex-1 flex text-xl font-semibold text-gray-800">
+					{title}
+				</div>
+				<div class="flex items-center gap-4">
+					<button class="text-gray-400 hover:text-gray-600">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+					</button>
+				</div>
+			</header>
+
+			<!-- Page Content -->
+			<main class="flex-1 overflow-y-auto w-full no-scrollbar">
+				<div class="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto h-full min-h-full">
+					<!-- Title visible only on mobile since desktop has it in topbar -->
+					<h1 class="md:hidden text-2xl font-bold text-gray-900 mb-6">{title}</h1>
+					<slot />
+				</div>
+			</main>
+		</div>
+	</div>
+
+	<script>
+		// Mobile menu toggle
+		const btn = document.getElementById('mobile-menu-btn');
+		const closeBtn = document.getElementById('close-sidebar');
+		const sidebar = document.getElementById('sidebar');
+		const overlay = document.getElementById('sidebar-overlay');
+
+		const toggleSidebar = (forceClose = false) => {
+			const isHidden = sidebar?.classList.contains('-translate-x-full');
+			if (isHidden && !forceClose) {
+				sidebar?.classList.remove('hidden', '-translate-x-full');
+				sidebar?.classList.add('flex');
+				overlay?.classList.remove('hidden');
+				document.body.style.overflow = 'hidden';
+			} else {
+				sidebar?.classList.add('-translate-x-full');
+				setTimeout(() => {
+					sidebar?.classList.add('hidden');
+					sidebar?.classList.remove('flex');
+				}, 300); // match transition duration
+				overlay?.classList.add('hidden');
+				document.body.style.overflow = '';
+			}
+		};
+
+		btn?.addEventListener('click', () => toggleSidebar(false));
+		closeBtn?.addEventListener('click', () => toggleSidebar(true));
+		overlay?.addEventListener('click', () => toggleSidebar(true));
+	</script>
+	<style>
+		/* Hide scrollbar for main content */
+		.no-scrollbar::-webkit-scrollbar {
+			display: none;
+		}
+		.no-scrollbar {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+	</style>
+</body>
+</html>

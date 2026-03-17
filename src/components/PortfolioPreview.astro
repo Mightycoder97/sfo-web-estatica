@@ -1,5 +1,7 @@
 ---
-const projects = [
+import { supabase } from '../lib/supabase';
+
+const fallbackProjects = [
 	{
 		title: "La Bohemia | Restaurante & Eventos",
 		thumbnail: "/img/portafolio/restaurante.png",
@@ -31,6 +33,34 @@ const projects = [
         url: "https://gasfitero-en-juliaca.vercel.app/"
 	}
 ];
+
+let projects: any[] = [];
+
+try {
+	const { data, error } = await supabase
+		.from('portafolio')
+		.select('*')
+		.order('orden', { ascending: true })
+		.order('created_at', { ascending: false });
+
+	if (error) {
+		console.warn("Supabase portafolio error or table missing, using fallback.", error.message);
+		projects = fallbackProjects;
+	} else if (data && data.length > 0) {
+		// Map Supabase schema to component schema
+		projects = data.map(item => ({
+			title: item.titulo,
+			thumbnail: item.thumbnail,
+			tags: item.tags ? item.tags.split(',').map((t: string) => t.trim()) : [],
+			url: item.url || "#"
+		}));
+	} else {
+		projects = fallbackProjects;
+	}
+} catch (e) {
+	console.error(e);
+	projects = fallbackProjects;
+}
 ---
 
 <section id="portafolio" class="py-24 bg-gray-900 overflow-hidden relative">
@@ -78,7 +108,7 @@ const projects = [
 
                         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20">
                             <div class="flex flex-wrap gap-2 mb-3">
-                                {project.tags.map(tag => (
+                                {project.tags.map((tag: string) => (
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-white/10 text-gray-200 backdrop-blur-md border border-white/10 uppercase tracking-wide">
                                         {tag}
                                     </span>

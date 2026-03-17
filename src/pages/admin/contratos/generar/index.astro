@@ -1,0 +1,326 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+---
+<AdminLayout title="Generar Contrato">
+	
+	<div class="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+		<div>
+			<a href="/admin/proyectos" class="text-sm font-medium text-gray-500 hover:text-gray-900 flex items-center gap-2 transition-colors mb-2">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+				Volver a Proyectos
+			</a>
+			<h2 class="text-2xl font-bold text-gray-900">Contrato de Prestación de Servicios</h2>
+		</div>
+		<button id="download-pdf-btn" class="w-full sm:w-auto flex items-center justify-center gap-2 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+			Generar y Descargar PDF
+		</button>
+	</div>
+
+	<!-- Loading overlay inside the contract view -->
+	<div id="loading-state" class="bg-white rounded-xl border border-gray-200 shadow-sm p-12 flex flex-col items-center justify-center min-h-[500px]">
+		<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin text-primary-600 mb-4"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+		<p class="text-gray-600">Cargando datos del proyecto...</p>
+	</div>
+
+	<!-- Error state -->
+	<div id="error-state" class="hidden bg-white rounded-xl border border-red-200 bg-red-50 p-6 flex items-start gap-4">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 mt-0.5"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+		<div>
+			<h3 class="font-semibold text-red-800">Error al cargar contrato</h3>
+			<p id="error-msg" class="text-sm text-red-600 mt-1">No se pudo encontrar el proyecto especificado.</p>
+		</div>
+	</div>
+
+	<!-- Contract A4 Preview Container -->
+	<div id="contract-wrapper" class="hidden max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden relative">
+		
+		<!-- This is the exact HTML element that will be printed via html2pdf -->
+		<div id="contract-content" class="bg-white p-10 md:p-16 text-gray-800 font-serif leading-relaxed text-[15px]">
+			
+			<style>
+				/* Override oklch colors for html2canvas compatibility */
+				#contract-content, 
+				#contract-content * {
+					color: #1f2937 !important; /* gray-800 fallback */
+					border-color: #e5e7eb !important; /* gray-200 fallback */
+					background-color: transparent !important;
+				}
+				#contract-content .text-gray-500 { color: #6b7280 !important; }
+				#contract-content .text-gray-600 { color: #4b5563 !important; }
+				#contract-content .text-gray-900 { color: #111827 !important; }
+				#contract-content .bg-gray-50 { background-color: #f9fafb !important; }
+			</style>
+
+			<div class="text-center mb-10 border-b-2 pb-6" style="border-color: var(--color-primary-600) !important;">
+				<div class="flex justify-center items-center gap-4 mb-4">
+					<img src="/img/logo_sin_fondo.jpeg" alt="SFO Estudio Web Logo" class="h-16 w-auto object-contain mix-blend-multiply" crossorigin="anonymous" />
+					<div class="text-left">
+						<h1 class="text-2xl font-bold uppercase tracking-wide" style="color: var(--color-primary-600) !important;">SFO ESTUDIO WEB</h1>
+						<p class="text-xs font-semibold tracking-widest mt-0.5" style="color: var(--color-accent) !important;">TRANSFORMACIÓN DIGITAL</p>
+					</div>
+				</div>
+				<h2 class="text-lg font-bold mt-2" style="color: var(--color-primary-900) !important;">ACUERDO DE SERVICIOS</h2>
+				<p class="text-sm font-medium text-gray-700">Términos y Condiciones Legales</p>
+				<p class="text-sm font-bold mt-1 text-gray-900"><span id="pdf-date-now">[FECHA EMISIÓN]</span></p>
+			</div>
+
+			<p class="mb-4 text-justify">
+				Conste por el presente documento, el <strong>CONTRATO DE PRESTACIÓN DE SERVICIOS</strong> que celebran de una parte:
+			</p>
+
+			<p class="mb-4 pl-4 text-justify border-l-[3px]" style="border-color: var(--color-primary-500) !important;">
+				<strong style="color: var(--color-primary-700) !important;">SFO ESTUDIO WEB</strong>, representado por su Director General <strong>Sebastian Leonardo Retamozo Reategui</strong>, debidamente identificado con DNI N° 75510799, a quien en adelante se le denominará <strong>"EL PROVEEDOR"</strong>;
+			</p>
+			
+			<p class="mb-4 text-justify">Y de la otra parte el CLIENTE detallado a continuación:</p>
+
+			<div class="bg-gray-50 border border-gray-200 p-4 rounded mb-6 text-sm">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<div>
+						<p class="font-bold text-gray-900 text-xs mb-1">NOMBRE / RAZÓN SOCIAL:</p>
+						<p id="pdf-client-name">[CARGANDO NOMBRE]</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-900 text-xs mb-1">IDENTIFICACIÓN:</p>
+						<p><span id="pdf-doc-type">[DOC]</span> <span id="pdf-doc-number">[CARGANDO DOC]</span></p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-900 text-xs mb-1">REPRESENTANTE:</p>
+						<p id="pdf-rep-name">(Mismo)</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-900 text-xs mb-1">CORREO ELECTRÓNICO:</p>
+						<p id="pdf-email">[CORREO]</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="space-y-6 text-justify mt-8">
+				<div>
+					<h3 class="font-bold mb-2 uppercase border-b pb-1" style="color: var(--color-primary-800) !important; border-color: var(--color-primary-200) !important;">CLÁUSULA PRIMERA: OBJETO DEL CONTRATO</h3>
+					<p>EL PROVEEDOR se compromete a prestar a favor de EL CLIENTE los servicios de <strong id="pdf-service-name">[SERVICIO]</strong>.</p>
+					
+					<div class="mt-4 pt-3 border-t border-dashed border-gray-300">
+						<p class="font-bold text-center text-sm mb-3">DETALLE DEL PROYECTO ASIGNADO</p>
+						<ul class="text-sm list-disc pl-5 space-y-2">
+							<li><strong>Servicio:</strong> <span id="pdf-service-name-2">...</span></li>
+							<li><strong>Costo Base:</strong> S/ <span id="pdf-price">[PRECIO]</span></li>
+							<li><strong>Descripción:</strong> <span id="pdf-service-desc">...</span></li>
+						</ul>
+					</div>
+				</div>
+
+				<div>
+					<h3 class="font-bold mb-2 uppercase border-b pb-1 mt-6" style="color: var(--color-primary-800) !important; border-color: var(--color-primary-200) !important;">CLÁUSULA SEGUNDA: CONDICIONES COMERCIALES Y DE PAGO</h3>
+					<p class="mb-2"><strong>2.1.</strong> El costo total acordado por el servicio contratado asciende a la suma de <strong>S/ <span id="pdf-price-2">[PRECIO]</span></strong>.</p>
+					<p class="mb-2"><strong>2.2.</strong> OBLIGATORIAMENTE se debe abonar un adelanto del 30% (<strong id="pdf-advance">S/ [ADELANTO]</strong>) del monto total para dar inicio formal a los trabajos de desarrollo. Una vez culminado el proyecto y cancelado el saldo restante de <strong id="pdf-balance">S/ [SALDO]</strong>, EL PROVEEDOR hará entrega inmediata de las respectivas credenciales de acceso.</p>
+					<p><strong>2.3.</strong> Modalidades de pago aceptadas: Billetera virtual (Yape o Plin) o por Transferencia bancaria Vía BCP o Interbank. Los datos exactos serán proporcionados en el comprobante fiscal.</p>
+				</div>
+
+				<div>
+					<h3 class="font-bold mb-2 uppercase border-b pb-1 mt-6" style="color: var(--color-primary-800) !important; border-color: var(--color-primary-200) !important;">CLÁUSULA TERCERA: INCLUSIONES ESPECÍFICAS</h3>
+					<p class="mb-2"><strong>3.1. Dominio y Hosting:</strong> El servicio ofrecido por EL PROVEEDOR no incluye el registro del dominio web ni el servicio de alojamiento (hosting), salvo que se especifique lo contrario.</p>
+					<p class="mb-2"><strong>3.2. Sesiones de Revisión:</strong> Todo proyecto contará explícitamente con TRES (3) rondas de revisión (sesiones) programadas, en las cuales EL CLIENTE levantará todas las observaciones consolidadas respecto al diseño y contenido.</p>
+					<p><strong>3.3. Aprobación de Diseño:</strong> EL PROVEEDOR presentará un modelo o "Diseño Inicial" de la plataforma, que deberá ser aprobado formalmente por EL CLIENTE antes de proceder a la fase de programación (desarrollo).</p>
+				</div>
+
+				<div>
+					<h3 class="font-bold mb-2 uppercase border-b pb-1 mt-6" style="color: var(--color-primary-800) !important; border-color: var(--color-primary-200) !important;">CLÁUSULA CUARTA: CONFIDENCIALIDAD</h3>
+					<p>Ambas partes mantendrán en estricta confidencialidad toda la información manejada para el desarrollo de los proyectos y no podrá ser revelada a terceros sin el consentimiento escrito de la contraparte.</p>
+				</div>
+			</div>
+
+			<p class="mt-12 mb-16 text-center text-sm">
+				Estando conforme con todas las cláusulas, firman el presente documento:
+			</p>
+
+			<!-- Signatures -->
+			<div class="grid grid-cols-2 gap-8 mt-12 pt-8">
+				<div class="text-center border-t border-gray-800 pt-3">
+					<p class="font-bold text-gray-900 text-sm uppercase" id="pdf-client-sign">[NOMBRE CLIENTE]</p>
+					<p class="text-xs text-gray-600 mt-1">DNI <span id="pdf-doc-sign">[DOC]</span></p>
+					<p class="text-xs text-gray-600">Representante Legal / Cliente</p>
+				</div>
+				<div class="text-center border-t border-gray-800 pt-3">
+					<p class="font-bold text-gray-900 text-sm">SEBASTIAN LEONARDO RETAMOZO REATEGUI</p>
+					<p class="text-xs text-gray-600 mt-1">DNI 75510799</p>
+					<p class="text-xs text-gray-600">Director de SFO Estudio Web</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- html2pdf.js dynamically loaded only on client -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+	<script>
+		// We use URL search params instead of dynamic routes for SSG compatibility
+		const urlParams = new URLSearchParams(window.location.search);
+		const queryId = urlParams.get('id');
+
+		let currentProject: any = null;
+
+		const loadPreview = async () => {
+			try {
+				if (!queryId) throw new Error("ID de proyecto no especificado en la URL (?id=...)");
+
+				// We need to fetch from supabase in client side
+				const { supabase } = await import('../../../../lib/supabase');
+
+				// Fetch deep nested relations for the contract
+				const { data: proyecto, error } = await supabase
+					.from('cliente_servicio')
+					.select(`
+						*,
+						clientes (
+							nombres, apellidos, tipo_documento, numero_documento,
+							empresa:empresas(id_empresa, razon_social, numero_ruc, direccion)
+						),
+						tipo_servicio_catalogo (id_servicio, nombre, precio_base)
+					`)
+					.eq('id_proyecto', queryId)
+					.single();
+
+				if (error) throw error;
+				if (!proyecto) throw new Error("Proyecto no encontrado.");
+
+				currentProject = proyecto;
+				
+				// Safely extract names handles null references
+				const client = proyecto.clientes || {};
+				const fullName = `${client.nombres || ''} ${client.apellidos || ''}`.trim() || 'Sin Nombre';
+				const company = (client.empresa && client.empresa.length > 0) ? client.empresa[0] : null;
+				const isCompany = !!company;
+				const representativeName = isCompany ? fullName : '(Mismo)';
+				
+				const legalName = company?.razon_social || fullName;
+				const legalDoc = company?.numero_ruc || client.numero_documento || '----';
+				const docType = company ? 'RUC' : (client.tipo_documento || 'DNI');
+				
+				const service = proyecto.tipo_servicio_catalogo || {};
+				
+				// Financials
+				const basePrice = service.precio_base ? Number(service.precio_base) : 0;
+				const stringPrice = basePrice.toFixed(2);
+				const advance = (basePrice * 0.30).toFixed(2);
+				const balance = (basePrice * 0.70).toFixed(2);
+
+				const today = new Date().toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+
+				// Helper to set text content safely
+				const setText = (id: string, text: string) => {
+					const el = document.getElementById(id);
+					if (el) el.textContent = text;
+				};
+
+				// Hydrate HTML Elements
+				setText('pdf-date-now', today);
+				setText('pdf-client-name', legalName);
+				setText('pdf-client-sign', legalName);
+				setText('pdf-doc-sign', legalDoc);
+				
+				setText('pdf-doc-type', docType);
+				setText('pdf-doc-number', legalDoc);
+				setText('pdf-rep-name', representativeName);
+				setText('pdf-email', client.email || 'No registrado');
+				
+				setText('pdf-service-name', service.nombre || 'Desarrollo Especializado');
+				setText('pdf-service-name-2', service.nombre || 'Desarrollo Especializado');
+				setText('pdf-service-desc', proyecto.observaciones || service.descripcion || 'Según requerimientos acordados.');
+				
+				setText('pdf-price', stringPrice);
+				setText('pdf-price-2', stringPrice);
+				setText('pdf-advance', `S/ ${advance}`);
+				setText('pdf-balance', `S/ ${balance}`);
+
+				// Swap UI
+				document.getElementById('loading-state')?.classList.add('hidden');
+				document.getElementById('contract-wrapper')?.classList.remove('hidden');
+
+			} catch (error: any) {
+				console.error("Error loading contract:", error);
+				document.getElementById('loading-state')?.classList.add('hidden');
+				const errorState = document.getElementById('error-state');
+				if (errorState) errorState.classList.remove('hidden');
+				const errorMsg = document.getElementById('error-msg');
+				if (errorMsg) errorMsg.textContent = error.message || 'Error desconocido';
+			}
+		};
+
+		// Run
+		document.addEventListener('DOMContentLoaded', loadPreview);
+
+		// PDF Generation Action
+		document.getElementById('download-pdf-btn')?.addEventListener('click', async () => {
+			if (!currentProject) return;
+			
+			const btn = document.getElementById('download-pdf-btn') as HTMLButtonElement;
+			if (!btn) return;
+
+			const originalText = btn.innerHTML;
+			btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Generando...';
+			btn.disabled = true;
+
+			try {
+				const element = document.getElementById('contract-content');
+				if (!element) throw new Error("Plantilla de contrato no encontrada.");
+
+				// ── Pre-flight: sanitize live DOM before html2canvas clones it ──
+				// 1. Remove Astro dev toolbar (its connectedCallback crashes in cloned iframe)
+				const removedToolbars: { el: Element, parent: Node, next: Node | null }[] = [];
+				document.querySelectorAll('astro-dev-toolbar, astro-dev-toolbar-window, [data-astro-dev-overlay]').forEach((el) => {
+					if (el.parentNode) {
+						removedToolbars.push({ el, parent: el.parentNode, next: el.nextSibling });
+						el.parentNode.removeChild(el);
+					}
+				});
+
+				// 2. Inject hex color overrides (html2canvas v0.10 cannot parse oklch)
+				const colorFix = document.createElement('style');
+				colorFix.id = '__pdf_color_fix__';
+				colorFix.textContent = '*, *::before, *::after { border-color: #e5e7eb !important; background-color: transparent !important; --tw-ring-color: transparent !important; outline-color: transparent !important; } body { background: #ffffff !important; color: #1f2937 !important; } #contract-content { background-color: #ffffff !important; } .bg-gray-50 { background-color: #f9fafb !important; } .text-gray-500, .text-xs { color: #6b7280 !important; } .text-gray-600 { color: #4b5563 !important; } .text-gray-700 { color: #374151 !important; } .text-gray-900, .font-bold { color: #111827 !important; } .border-gray-300 { border-color: #d1d5db !important; } .border-gray-800, .border-gray-900 { border-color: #1f2937 !important; } .border-dashed { border-color: #d1d5db !important; } #contract-content [style*="color: var(--color-primary"] { color: #4f46e5 !important; } #contract-content [style*="var(--color-accent)"] { color: #c026d3 !important; } #contract-content [style*="border-color: var(--color-primary"] { border-color: #e0e7ff !important; }';
+				document.head.appendChild(colorFix);
+
+				// ── Generate PDF ──
+				const opt: any = {
+					margin:       [10, 10, 10, 10],
+					filename:     `Contrato_SFO_${currentProject.clientes?.nombres?.replace(/\s+/g,'_') || 'Cliente'}.pdf`,
+					image:        { type: 'jpeg', quality: 0.98 },
+					html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+					jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+				};
+
+				// @ts-ignore html2pdf is brought via CDN
+				await html2pdf().set(opt).from(element).save();
+
+				// ── Post-flight: restore live DOM ──
+				document.getElementById('__pdf_color_fix__')?.remove();
+				removedToolbars.forEach(({ el, parent, next }) => {
+					parent.insertBefore(el, next);
+				});
+
+				// OPTIONAL: Log the contract in Supabase
+				const company = (currentProject.clientes?.empresa && currentProject.clientes.empresa.length > 0) ? currentProject.clientes.empresa[0] : null;
+				if (company?.id_empresa) {
+					const { supabase } = await import('../../../../lib/supabase');
+					await supabase.from('contrato_servicio').insert([{
+						id_cliente: currentProject.id_cliente,
+						id_empresa: company.id_empresa,
+						fecha_inicio: currentProject.fecha_inicio ? currentProject.fecha_inicio.split('T')[0] : null,
+						observaciones: `Contrato generado automáticamente (Proyecto ID: ${currentProject.id_proyecto})`
+					}]);
+				}
+
+			} catch (err) {
+				console.error("Failed to generate PDF:", err);
+				document.getElementById('__pdf_color_fix__')?.remove();
+				alert("Hubo un error al generar el PDF.");
+			} finally {
+				btn.innerHTML = originalText;
+				btn.disabled = false;
+			}
+		});
+
+	</script>
+</AdminLayout>

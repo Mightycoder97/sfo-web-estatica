@@ -1,0 +1,193 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { supabase } from '../../../lib/supabase';
+
+// Security check if you implement Auth0 or Supabase auth later
+// export const prerender = false;
+
+let error = null;
+let portafolio = [];
+
+try {
+  const { data, error: sbError } = await supabase
+    .from('portafolio')
+    .select('*')
+    .order('orden', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (sbError) {
+    if (sbError.code === '42P01') {
+      error = "La tabla 'portafolio' aún no existe en tu base de datos Supabase. Por favor, créala usando el script SQL recomendado.";
+    } else {
+      throw sbError;
+    }
+  } else {
+    portafolio = data || [];
+  }
+} catch (e: any) {
+  error = e.message;
+}
+---
+
+<AdminLayout title="Gestión de Portafolio - SFO Estudio Web">
+  <div class="sm:flex sm:items-center sm:justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Proyectos del Portafolio</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Gestiona los trabajos destacados que se muestran públicamente en tu sitio web.
+      </p>
+    </div>
+    <div class="mt-4 sm:mt-0">
+      <a
+        href="/admin/portafolio/nuevo"
+        class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+      >
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Nuevo Proyecto Público
+      </a>
+    </div>
+  </div>
+
+  {error && (
+    <div class="rounded-md bg-red-50 p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">Error al cargar portafolio</h3>
+          <div class="mt-2 text-sm text-red-700">
+            <p>{error}</p>
+          </div>
+          {error.includes('42P01') && (
+            <div class="mt-4">
+              <p class="text-sm font-bold text-red-800 mb-2">Ejecuta este SQL en Supabase:</p>
+              <pre class="bg-red-100 p-3 rounded text-xs overflow-x-auto"><code>CREATE TABLE public.portafolio (
+  id_portafolio uuid NOT NULL DEFAULT gen_random_uuid(),
+  titulo character varying NOT NULL,
+  thumbnail text NOT NULL,
+  tags text,
+  url text,
+  orden integer DEFAULT 0,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT portafolio_pkey PRIMARY KEY (id_portafolio)
+);</code></pre>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )}
+
+  {!error && (
+    <div class="bg-white shadow-sm ring-1 ring-gray-300 sm:rounded-lg overflow-hidden">
+      {portafolio.length > 0 ? (
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-20">Imagen</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Proyecto</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Etiquetas</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-32 hidden md:table-cell">Orden</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 w-24">
+                <span class="sr-only">Acciones</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            {portafolio.map((item) => (
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                  <div class="h-10 w-16 overflow-hidden rounded bg-gray-100 flex-shrink-0">
+                    <img src={item.thumbnail} alt={item.titulo} class="h-full w-full object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' fill=\\'%23eee\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"/>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
+                  {item.titulo}
+                  {item.url && (
+                    <a href={item.url} target="_blank" class="block text-xs font-normal text-indigo-600 hover:text-indigo-900 mt-1 truncate max-w-xs">{item.url}</a>
+                  )}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <div class="flex flex-wrap gap-1">
+                    {item.tags ? item.tags.split(',').map((tag: string) => (
+                      <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                        {tag.trim()}
+                      </span>
+                    )) : '-'}
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+                  {item.orden || 0}
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <div class="flex items-center justify-end gap-2">
+                    <a href={`/admin/portafolio/editar?id=${item.id_portafolio}`} class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-md transition-colors" title="Editar">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                      </svg>
+                    </a>
+                    <button type="button" class="text-red-600 hover:text-red-900 bg-red-50 p-2 rounded-md transition-colors btn-delete" data-id={item.id_portafolio} title="Eliminar">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div class="text-center py-16 px-4">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <h3 class="mt-2 text-sm font-semibold text-gray-900">Sin proyectos públicos</h3>
+          <p class="mt-1 text-sm text-gray-500">Aún no has agregado ningún proyecto al portafolio de la web pública.</p>
+          <div class="mt-6">
+            <a href="/admin/portafolio/nuevo" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
+              Nuevo Proyecto
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  )}
+
+  <script>
+    import { supabase } from '../../../lib/supabase';
+    
+    // Delete action
+    document.querySelectorAll('.btn-delete').forEach(button => {
+      button.addEventListener('click', async (e) => {
+        const id = (e.currentTarget as HTMLButtonElement).dataset.id;
+        
+        if (confirm('¿Estás seguro que deseas eliminar este proyecto del portafolio público? Esta acción es irreversible.')) {
+          try {
+            const { error } = await supabase
+              .from('portafolio')
+              .delete()
+              .eq('id_portafolio', id);
+              
+            if (error) throw error;
+            
+            alert('Proyecto eliminado exitosamente.');
+            window.location.reload();
+          } catch (error: any) {
+            console.error('Error:', error);
+            alert(`Error al eliminar: ${error.message}`);
+          }
+        }
+      });
+    });
+  </script>
+</AdminLayout>
